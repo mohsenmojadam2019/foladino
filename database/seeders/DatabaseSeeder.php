@@ -64,7 +64,8 @@ class DatabaseSeeder extends Seeder
 
         $settings = [
             'site_name'=>'فولادینو','phone'=>'۰۲۱-۹۱۰۰۳۳۳۳','support_phone'=>'۰۲۱-۹۱۰۰۷۰۰۰','email'=>'info@fooladino.ir','address'=>'تهران، دفتر مرکزی فولادینو',
-            'hero_title'=>'بازار هوشمند خرید آهن‌آلات','hero_subtitle'=>'فولادینو؛ پلی میان پروژه‌های بزرگ امروز و آینده‌ای محکم‌تر','annual_tons'=>'۱۰۰,۰۰۰+','active_customers'=>'۱۰,۰۰۰+','factories_count'=>'۵۰۰+'
+            'hero_title'=>'بازار هوشمند|خرید آهن‌آلات','hero_subtitle'=>'فولادینو؛ پلی میان پروژه‌های بزرگ امروز و آینده‌ای محکم‌تر','annual_tons'=>'۱۰۰,۰۰۰+','active_customers'=>'۱۰,۰۰۰+','factories_count'=>'۵۰۰+',
+            'logo_image'=>'/images/logo-mark.svg','hero_image'=>'/images/hero-steel.svg','project_image'=>'/images/project.svg','delivery_map_image'=>'/images/iran-map.svg','cta_image'=>'/images/coil.svg','factory_default_image'=>'/images/factory.svg'
         ];
         foreach ($settings as $k=>$v) Setting::updateOrCreate(['key'=>$k],['value'=>$v,'group'=>'general']);
     }

@@ -18,6 +18,15 @@ if (! function_exists('jdate_fa')) {
     }
 }
 
+if (! function_exists('jalali_to_carbon')) {
+    function jalali_to_carbon(?string $value, string $format = 'Y/m/d H:i') {
+        if (! $value) return null;
+        $value = strtr($value, ['۰'=>'0','۱'=>'1','۲'=>'2','۳'=>'3','۴'=>'4','۵'=>'5','۶'=>'6','۷'=>'7','۸'=>'8','۹'=>'9']);
+        try { return Jalalian::fromFormat($format, trim($value))->toCarbon(); }
+        catch (Throwable $e) { return null; }
+    }
+}
+
 if (! function_exists('money_fa')) {
     function money_fa($amount): string { return fa_digits(number_format((float) $amount)); }
 }

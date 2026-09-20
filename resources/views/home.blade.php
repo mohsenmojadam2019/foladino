@@ -12,12 +12,13 @@
     </aside>
     <div class="hero-copy">
       <div class="eyebrow">قیمت شفاف <span>·</span> تأمین مطمئن <span>·</span> تحویل سراسر کشور</div>
-      <h1>بازار هوشمند<br><span>خرید آهن‌آلات</span></h1>
+      @php($heroParts = explode('|', $siteSettings['hero_title'] ?? 'بازار هوشمند|خرید آهن‌آلات'))
+      <h1>{{ $heroParts[0] }}<br><span>{{ $heroParts[1] ?? 'خرید آهن‌آلات' }}</span></h1>
       <p>{{ $siteSettings['hero_subtitle'] ?? 'فولادینو؛ پلی میان پروژه‌های بزرگ امروز و آینده‌ای محکم‌تر' }}</p>
       <div class="hero-actions"><a class="btn btn-primary btn-lg" href="#quote">دریافت استعلام سریع ←</a><a class="btn btn-ghost btn-lg" href="#prices">مشاهده قیمت‌ها</a></div>
       <div class="hero-stats"><div><b>{{ $siteSettings['factories_count'] ?? '۵۰۰+' }}</b><span>کارخانه معتبر</span></div><div><b>{{ $siteSettings['active_customers'] ?? '۱۰,۰۰۰+' }}</b><span>مشتری فعال</span></div><div><b>{{ $siteSettings['annual_tons'] ?? '۱۰۰,۰۰۰+' }}</b><span>تن تأمین سالانه</span></div></div>
     </div>
-    <div class="hero-visual"><img src="/images/hero-steel.svg" alt="انبار و تأمین فولاد"><div class="hero-badge">مطمئن‌تر<br>سریع‌تر<br><strong>هوشمندتر</strong></div></div>
+    <div class="hero-visual"><img src="{{ $siteSettings['hero_image'] ?? '/images/hero-steel.svg' }}" alt="انبار و تأمین فولاد"><div class="hero-badge">مطمئن‌تر<br>سریع‌تر<br><strong>هوشمندتر</strong></div></div>
   </div>
 </section>
 
@@ -35,8 +36,8 @@
     <input name="amount" type="number" min="0" step="0.1" placeholder="مقدار (تن)"><input name="city" placeholder="شهر مقصد"><button class="btn btn-primary">دریافت استعلام ←</button>
   </form>
  </div>
- <div class="project-card"><img src="/images/project.svg" alt="پروژه عمرانی"><div><h2>تأمین برای پروژه‌های عمرانی</h2><p>از ساختمان‌های مسکونی تا پروژه‌های ملی، فولادینو همراه مطمئن شماست.</p><a href="#quote" class="btn btn-light">مشاهده راهکارهای سازمانی</a></div></div>
- <div class="delivery-card"><div><h2>پوشش ارسال به سراسر ایران</h2><p>تحویل سریع و مطمئن در همه استان‌ها</p><ul><li>ناوگان معتبر</li><li>تحویل در محل پروژه</li><li>پیگیری آنلاین سفارش</li></ul></div><img src="/images/iran-map.svg" alt="ارسال به سراسر ایران"></div>
+ <div class="project-card"><img src="{{ $siteSettings['project_image'] ?? '/images/project.svg' }}" alt="پروژه عمرانی"><div><h2>تأمین برای پروژه‌های عمرانی</h2><p>از ساختمان‌های مسکونی تا پروژه‌های ملی، فولادینو همراه مطمئن شماست.</p><a href="#quote" class="btn btn-light">مشاهده راهکارهای سازمانی</a></div></div>
+ <div class="delivery-card"><div><h2>پوشش ارسال به سراسر ایران</h2><p>تحویل سریع و مطمئن در همه استان‌ها</p><ul><li>ناوگان معتبر</li><li>تحویل در محل پروژه</li><li>پیگیری آنلاین سفارش</li></ul></div><img src="{{ $siteSettings['delivery_map_image'] ?? '/images/iran-map.svg' }}" alt="ارسال به سراسر ایران"></div>
 </section>
 
 <section id="prices" class="container data-grid">
@@ -56,6 +57,6 @@
 
 <section id="articles" class="container articles"><div class="section-title"><div><h2>تحلیل بازار و راهنمای خرید</h2><p>محتوای کاربردی برای تصمیم‌گیری حرفه‌ای در بازار فولاد</p></div><a href="#">مشاهده همه مقالات</a></div><div class="article-grid">@foreach($articles as $a)<article><img src="{{ $a->image }}" alt="{{ $a->title }}"><div><span>{{ jdate_fa($a->published_at,'Y/m/d') }}</span><h3>{{ $a->title }}</h3><p>{{ $a->excerpt }}</p><a href="#">ادامه مطلب ←</a></div></article>@endforeach</div></section>
 
-<section class="final-cta"><div class="container"><img src="/images/coil.svg" alt="کلاف فولادی"><div><h2>برای پروژه بعدی خود، <span>هوشمندتر</span> تأمین کنید</h2><p>با فولادینو خرید آهن‌آلات ساده‌تر، سریع‌تر و مطمئن‌تر است.</p></div><a href="#quote" class="btn btn-primary btn-lg">همین حالا استعلام بگیرید ←</a><div class="cta-features"><span>◉ قیمت شفاف</span><span>▣ تحویل مطمئن</span><span>◎ پشتیبانی تخصصی</span></div></div></section>
+<section class="final-cta"><div class="container"><img src="{{ $siteSettings['cta_image'] ?? '/images/coil.svg' }}" alt="کلاف فولادی"><div><h2>برای پروژه بعدی خود، <span>هوشمندتر</span> تأمین کنید</h2><p>با فولادینو خرید آهن‌آلات ساده‌تر، سریع‌تر و مطمئن‌تر است.</p></div><a href="#quote" class="btn btn-primary btn-lg">همین حالا استعلام بگیرید ←</a><div class="cta-features"><span>◉ قیمت شفاف</span><span>▣ تحویل مطمئن</span><span>◎ پشتیبانی تخصصی</span></div></div></section>
 </main>
 @endsection

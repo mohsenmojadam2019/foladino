@@ -46,13 +46,18 @@ class AdminController extends Controller
     public function content(){ return view('admin.content',['articles'=>Article::orderByDesc('published_at')->get()]); }
     public function articleStore(Request $r){
         $d=$r->validate(['title'=>'required|max:220','excerpt'=>'nullable|max:500','body'=>'nullable|string','published_at'=>'nullable|string']);
-        $d['slug']=Str::slug($r->input('slug') ?: uniqid('article-')); $d['image']=$r->input('image','/images/article-market.svg'); $d['is_published']=$r->boolean('is_published',true); $d['published_at']=now(); Article::create($d);
+        $d['slug']=Str::slug($r->input('slug') ?: uniqid('article-')); $d['image']=$r->input('image','/images/article-market.svg'); $d['is_published']=$r->boolean('is_published',true);
+        $d['published_at']=jalali_to_carbon($r->input('published_at')) ?: now(); Article::create($d);
         return back()->with('success','مقاله منتشر شد.');
     }
     public function articleDestroy(Article $article){ $article->delete(); return back()->with('success','مقاله حذف شد.'); }
 
     public function settings(){ return view('admin.settings',['settings'=>Setting::pluck('value','key')->all(),'users'=>User::orderBy('name')->get()]); }
-    public function settingsUpdate(Request $r){ foreach($r->except('_token') as $k=>$v) Setting::updateOrCreate(['key'=>$k],['value'=>$v,'group'=>'general']); return back()->with('success','تنظیمات ذخیره شد.'); }
+    public function settingsUpdate(Request $r){
+        $keys=['site_name','phone','support_phone','email','address','hero_title','hero_subtitle','annual_tons','active_customers','factories_count','logo_image','hero_image','project_image','delivery_map_image','cta_image','factory_default_image'];
+        foreach($r->only($keys) as $k=>$v) Setting::updateOrCreate(['key'=>$k],['value'=>$v,'group'=>'general']);
+        return back()->with('success','تنظیمات ذخیره شد.');
+    }
     public function userStore(Request $r){
         $d=$r->validate(['name'=>'required|max:120','email'=>'required|email|unique:users,email','password'=>'required|min:8','role'=>'required|in:super_admin,admin,pricing,content']);
         User::create(['name'=>$d['name'],'email'=>$d['email'],'password'=>Hash::make($d['password']),'role'=>$d['role'],'is_active'=>true]); return back()->with('success','کاربر سازمانی ایجاد شد.');

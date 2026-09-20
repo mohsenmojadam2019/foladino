@@ -41,3 +41,22 @@ php artisan serve
 
 ## تصاویر
 تمام Assetهای مورد استفاده در طرح داخل `public/images` قرار دارند و Seeder نیز به همان مسیرهای Local اشاره می‌کند؛ هیچ تصویر Remote برای UI اصلی لازم نیست.
+
+## دسترسی نقش‌ها
+- `super_admin`: دسترسی کامل + تنظیمات و کاربران
+- `admin`: کاتالوگ، قیمت، CRM و محتوا
+- `pricing`: داشبورد و قیمت‌گذاری
+- `content`: داشبورد و مدیریت محتوا
+
+دسترسی‌ها در سمت سرور با Middleware کنترل می‌شوند و صرفاً مخفی‌سازی منو نیستند.
+
+## Frontend assets
+این پروژه برای رابط اصلی به Vite وابسته نیست؛ CSS و JavaScript تولیدشده مستقیماً از `public/css` و `public/js` سرو می‌شوند. مسیر تصاویر ثابت نیز از Seeder تنظیمات قابل مدیریت است.
+
+## بررسی سلامت
+```bash
+php artisan route:list
+php artisan view:cache
+php artisan config:cache
+php artisan migrate:fresh --seed
+```
