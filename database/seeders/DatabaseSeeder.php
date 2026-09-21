@@ -37,7 +37,7 @@ class DatabaseSeeder extends Seeder
             $product = Product::updateOrCreate(['slug'=>$p[1]], [
                 'name'=>$p[0],'sku'=>$p[2],'category_id'=>Category::whereSlug($p[3])->value('id'),'factory_id'=>Factory::whereSlug($p[4])->value('id'),
                 'size'=>$p[5],'standard'=>$p[6],'unit'=>'کیلوگرم','price'=>$p[7],'price_change'=>$p[8],'stock_status'=>'available','image'=>$p[9],
-                'description'=>'محصول منتخب بازار فولادینو با تأمین مستقیم از کارخانه، کنترل مشخصات فنی و امکان ارسال به سراسر کشور.','is_featured'=>true,'is_active'=>true
+                'description'=>'محصول تولیدی فولادینو برای فروش مستقیم و عمده، با کنترل مشخصات فنی، قیمت روز و امکان ارسال به سراسر کشور.','is_featured'=>true,'is_active'=>true
             ]);
             PriceHistory::where('product_id',$product->id)->delete();
             foreach ([5,4,3,2,1,0] as $d) PriceHistory::create(['product_id'=>$product->id,'price'=>max(1000,$p[7]-($d*110)+($idx*35)),'change_percent'=>$p[8],'recorded_at'=>$this->j('1405/06/'.str_pad((string)(29-$d),2,'0',STR_PAD_LEFT).' 10:42')]);
@@ -64,7 +64,7 @@ class DatabaseSeeder extends Seeder
 
         $settings = [
             'site_name'=>'فولادینو','phone'=>'۰۲۱-۹۱۰۰۳۳۳۳','support_phone'=>'۰۲۱-۹۱۰۰۷۰۰۰','email'=>'info@fooladino.ir','address'=>'تهران، دفتر مرکزی فولادینو',
-            'hero_title'=>'بازار هوشمند|خرید آهن‌آلات','hero_subtitle'=>'فولادینو؛ پلی میان پروژه‌های بزرگ امروز و آینده‌ای محکم‌تر','annual_tons'=>'۱۰۰,۰۰۰+','active_customers'=>'۱۰,۰۰۰+','factories_count'=>'۵۰۰+',
+            'hero_title'=>'فروش عمده|محصولات فولادینو','hero_subtitle'=>'تولید و عرضه مستقیم محصولات فولادی با قیمت روز برای پروژه‌های بزرگ','annual_tons'=>'۱۰۰,۰۰۰+','active_customers'=>'۱۰,۰۰۰+','factories_count'=>'۵۰۰+',
             'logo_image'=>'/images/logo-mark.svg','hero_image'=>'/images/hero-steel.svg','project_image'=>'/images/project.svg','delivery_map_image'=>'/images/iran-map.svg','cta_image'=>'/images/coil.svg','factory_default_image'=>'/images/factory.svg'
         ];
         foreach ($settings as $k=>$v) Setting::updateOrCreate(['key'=>$k],['value'=>$v,'group'=>'general']);
