@@ -18,6 +18,8 @@
         </nav>
         <div class="nav-actions">
             <div class="search-mini"><svg viewBox="0 0 24 24"><path d="m21 21-4.3-4.3m2.3-5.2A7.5 7.5 0 1 1 4 11.5a7.5 7.5 0 0 1 15 0Z"/></svg><input id="globalSearch" autocomplete="off" placeholder="جستجوی محصول، کارخانه یا استاندارد ..."></div>
+            <a class="nav-icon" href="#quote" aria-label="سبد استعلام"><span>🛒</span><i>۰</i></a>
+            <a class="nav-icon" href="tel:02191003333" aria-label="پشتیبانی"><span>♧</span></a>
             <a class="support" href="tel:02191003333"><b>{{ $siteSettings['phone'] ?? '۰۲۱-۹۱۰۰۳۳۳۳' }}</b><small>مشاوره و پشتیبانی</small></a>
             <a class="btn btn-primary btn-sm" href="/admin">ورود / ثبت‌نام</a>
             <button class="menu-btn" id="menuBtn" aria-label="منو">☰</button>
