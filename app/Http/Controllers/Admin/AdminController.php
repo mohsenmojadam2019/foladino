@@ -2,7 +2,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\{Article,Category,Factory,PriceHistory,Product,QuoteRequest,Setting,User};
+use App\Models\{Article,Category,Factory,PriceHistory,Product,PurchaseOrder,QuoteRequest,Setting,User};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -39,6 +39,8 @@ class AdminController extends Controller
         $product->update($d); PriceHistory::create(['product_id'=>$product->id,'price'=>$d['price'],'change_percent'=>$d['price_change'],'recorded_at'=>now()]);
         return back()->with('success','قیمت جدید ثبت شد.');
     }
+
+    public function orders(){ return view('admin.orders',['orders'=>PurchaseOrder::with('product')->latest()->get()]); }
 
     public function quotes(){ return view('admin.quotes',['quotes'=>QuoteRequest::latest()->get()]); }
     public function quoteUpdate(Request $r, QuoteRequest $quote){ $d=$r->validate(['status'=>'required|in:new,contacted,quoted,won,lost','note'=>'nullable|string|max:1000']); $quote->update($d); return back()->with('success','وضعیت استعلام به‌روزرسانی شد.'); }

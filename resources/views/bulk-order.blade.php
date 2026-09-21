@@ -17,8 +17,9 @@
     </div>
   </div>
 
-  <form method="post" action="{{ route('quote.store') }}" class="order-grid">
+  <form method="post" action="{{ route('checkout.start') }}" class="order-grid">
     @csrf
+    <input type="hidden" name="product_id" value="{{ $product->id }}">
     <input type="hidden" name="product_name" value="{{ $product->name }}">
     <input type="hidden" name="note" value="ثبت از صفحه سفارش عمده">
     <div class="order-card">
@@ -31,9 +32,9 @@
 
     <div class="order-card shipping-card"><h3>روش ارسال</h3><label class="radio-row"><input type="radio" name="shipping_ui" checked disabled><span><b>باربری طرف قرارداد فولادینو</b><small>بیمه بار، هماهنگی و تحویل به مقصد</small></span></label><label class="radio-row"><input type="radio" disabled><span><b>تحویل درب کارخانه</b><small>مناسب خریداران دارای ناوگان</small></span></label><label class="radio-row"><input type="radio" disabled><span><b>حمل اختصاصی پروژه</b><small>با هماهنگی واحد لجستیک</small></span></label></div>
 
-    <div class="order-card buyer-card"><h3>اطلاعات خریدار سازمانی</h3><div class="form-grid"><label>نام شرکت / خریدار *<input name="name" required value="{{ old('name') }}" placeholder="مثال: شرکت عمران سازه نوین"></label><label>شماره تماس *<input name="mobile" required value="{{ old('mobile') }}" placeholder="۰۹۱۲..."></label><label class="full">شهر مقصد<input name="city" value="{{ old('city') }}" placeholder="استان و شهر مقصد بار"></label></div><div class="order-actions"><button class="btn primary big">ثبت نهایی سفارش</button><a class="btn outline big" href="tel:02191003333">مشاوره تلفنی</a></div></div>
+    <div class="order-card buyer-card"><h3>اطلاعات خریدار سازمانی</h3><div class="form-grid"><label>نام شرکت / خریدار *<input name="name" required value="{{ old('name') }}" placeholder="مثال: شرکت عمران سازه نوین"></label><label>شماره تماس *<input name="mobile" required value="{{ old('mobile') }}" placeholder="۰۹۱۲..."></label><label class="full">شهر مقصد<input name="city" value="{{ old('city') }}" placeholder="استان و شهر مقصد بار"></label></div><div class="order-actions"><button class="btn primary big">ثبت سفارش و پرداخت آنلاین</button><button class="btn outline big" formaction="{{ route('quote.store') }}">دریافت پیش‌فاکتور</button></div></div>
 
-    <div class="order-card payment-card"><h3>روش پرداخت</h3><label class="radio-row selected"><input type="radio" checked disabled><span><b>پرداخت امن بانکی</b><small>پس از تأیید پیش‌فاکتور</small></span></label><label class="radio-row"><input type="radio" disabled><span><b>واریز به حساب شرکت</b><small>با دریافت فاکتور رسمی</small></span></label><div class="safe-pay"><span>✓</span><div><b>پرداخت امن و مطمئن</b><small>جزئیات پرداخت بعد از تأیید نهایی سفارش اعلام می‌شود.</small></div></div></div>
+    <div class="order-card payment-card"><h3>روش پرداخت</h3><label class="radio-row selected"><input type="radio" checked disabled><span><b>پرداخت امن بانکی</b><small>پرداخت مستقیم از درگاه پس از ثبت سفارش</small></span></label><label class="radio-row"><input type="radio" disabled><span><b>واریز به حساب شرکت</b><small>با دریافت فاکتور رسمی</small></span></label><div class="safe-pay"><span>✓</span><div><b>پرداخت امن و مطمئن</b><small>جزئیات پرداخت بعد از تأیید نهایی سفارش اعلام می‌شود.</small></div></div></div>
   </form>
 </section>
 </main>

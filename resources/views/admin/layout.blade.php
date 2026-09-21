@@ -32,6 +32,7 @@
         <a class="{{ request()->routeIs('admin.pricing*')?'active':'' }}" href="{{ route('admin.pricing') }}">⌁ <span>مدیریت قیمت‌ها</span></a>
       @endif
       @if(in_array($role,['super_admin','admin']))
+        <a class="{{ request()->routeIs('admin.orders*')?'active':'' }}" href="{{ route('admin.orders') }}">▤ <span>سفارش‌های آنلاین</span></a>
         <a class="{{ request()->routeIs('admin.quotes*')?'active':'' }}" href="{{ route('admin.quotes') }}">☏ <span>استعلام‌ها و CRM</span></a>
       @endif
       @if(in_array($role,['super_admin','admin','content']))

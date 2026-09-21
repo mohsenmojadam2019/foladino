@@ -1,6 +1,7 @@
 <?php
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\QuoteController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\AdminController;
 use Illuminate\Support\Facades\Route;
@@ -12,6 +13,8 @@ Route::get('/bulk-order/{product:slug?}', [HomeController::class,'bulkOrder'])->
 Route::get('/about', [HomeController::class,'about'])->name('about');
 Route::get('/contact', [HomeController::class,'contact'])->name('contact');
 Route::post('/quote', [QuoteController::class,'store'])->name('quote.store')->middleware('throttle:10,1');
+Route::post('/checkout', [CheckoutController::class,'start'])->name('checkout.start')->middleware('throttle:10,1');
+Route::get('/payment/callback/{token}', [CheckoutController::class,'callback'])->name('payment.callback');
 
 Route::prefix('admin')->name('admin.')->group(function(){
     Route::get('/login',[AuthController::class,'showLogin'])->name('login');
@@ -36,6 +39,7 @@ Route::prefix('admin')->name('admin.')->group(function(){
         });
 
         Route::middleware('role:super_admin,admin')->group(function(){
+            Route::get('/orders',[AdminController::class,'orders'])->name('orders');
             Route::get('/quotes',[AdminController::class,'quotes'])->name('quotes');
             Route::put('/quotes/{quote}',[AdminController::class,'quoteUpdate'])->name('quotes.update');
         });
