@@ -6,9 +6,12 @@ use App\Http\Controllers\Admin\AdminController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class,'index'])->name('home');
+Route::get('/products', [HomeController::class,'products'])->name('products');
+Route::get('/prices', [HomeController::class,'prices'])->name('prices');
+Route::get('/bulk-order/{product:slug?}', [HomeController::class,'bulkOrder'])->name('bulk-order');
+Route::get('/about', [HomeController::class,'about'])->name('about');
+Route::get('/contact', [HomeController::class,'contact'])->name('contact');
 Route::post('/quote', [QuoteController::class,'store'])->name('quote.store')->middleware('throttle:10,1');
-Route::get('/prices', fn()=>redirect('/#prices'))->name('prices');
-Route::get('/products', fn()=>redirect('/#products'))->name('products');
 
 Route::prefix('admin')->name('admin.')->group(function(){
     Route::get('/login',[AuthController::class,'showLogin'])->name('login');
