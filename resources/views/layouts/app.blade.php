@@ -8,8 +8,9 @@
     <meta name="description" content="@yield('description','فروش مستقیم و عمده محصولات فولادی فولادینو با قیمت روز، سفارش آنلاین و ارسال سراسر کشور')">
     <link rel="icon" href="{{ $siteSettings['logo_image'] ?? '/images/logo-mark.svg' }}">
     <link rel="stylesheet" href="/css/site.css">
+    @stack('styles')
 </head>
-<body>
+<body class="@yield('body_class')">
 <header class="site-header">
     <div class="shell header-row">
         <a class="brand" href="{{ route('home') }}">

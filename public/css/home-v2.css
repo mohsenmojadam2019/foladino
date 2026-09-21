@@ -1,0 +1,114 @@
+.home-v2-body{background:#fff;color:#081a2d}
+.home-v2-body .shell{width:min(1370px,calc(100% - 70px))}
+.home-v2-body .site-header{height:58px;position:relative;top:auto;background:url('/images/home-ref/header.png') center/100% 100% no-repeat;border-bottom:0}
+.home-v2-body .header-row{height:58px;gap:20px}
+.home-v2-body .header-row>*{opacity:0}
+.home-v2-body .brand{min-width:180px}
+.home-v2-body .brand-mark{width:32px;height:32px}
+.home-v2-body .brand-mark img{width:30px;height:30px}
+.home-v2-body .brand strong{font-size:22px;font-weight:900}
+.home-v2-body .brand small{font-size:9px;color:#d3dde7}
+.home-v2-body .nav{margin:0 auto;gap:34px}
+.home-v2-body .nav a{font-size:12px;font-weight:700;padding:20px 0 17px;color:#f2f5f7}
+.home-v2-body .nav a.active:after{height:3px;background:#ff7318}
+.home-v2-body .header-actions{min-width:185px;justify-content:flex-end}
+.home-v2-body .outline-link{display:none}
+.home-v2-body .orange-link{background:#ff7318;border-radius:5px;padding:10px 19px;font-size:11px}
+.home-reference{overflow:hidden}
+.hero-ref{height:322px;position:relative;background:url('/images/home-ref/hero.png') center/100% 100% no-repeat}
+.hero-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+.hero-hotspot{position:absolute;top:195px;height:45px;border-radius:7px;z-index:5}
+.hero-hotspot-order{right:80px;width:188px}
+.hero-hotspot-price{right:282px;width:191px}
+.hero-mobile{display:none}
+.home-price-section{height:180px;padding:17px 0 15px;background:#fff;border-bottom:1px solid #edf1f5}
+.home-section-heading{height:55px;display:flex;align-items:flex-start;justify-content:space-between;position:relative}
+.home-section-heading>div{margin:auto;text-align:center}
+.home-section-heading>div>span{display:block;color:#ff7318;font-size:9px;font-weight:800}
+.home-section-heading h2{font-size:19px;line-height:1.25;margin:2px 0;color:#091c32}
+.home-section-heading p{font-size:9px;color:#7b8794;margin:2px 0 0}
+.home-section-heading>a{position:absolute;left:0;top:11px;border:1px solid #cdd7df;border-radius:5px;padding:6px 11px;font-size:9px;font-weight:800;color:#2d4054;background:#fff}
+.home-price-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.home-price-card{height:91px;border:1px solid #dce4eb;border-radius:8px;background:#fff;display:grid;grid-template-columns:86px 1fr 44px;align-items:center;padding:8px 10px;box-shadow:0 4px 14px rgba(10,32,52,.04)}
+.home-price-card img{width:80px;height:66px;object-fit:cover;border-radius:5px}
+.home-price-card .price-copy{padding-right:7px}
+.home-price-card b,.home-price-card strong,.home-price-card small{display:block}
+.home-price-card b{font-size:12px;margin-bottom:2px}
+.home-price-card strong{font-size:15px;line-height:1.2}
+.home-price-card small{font-size:8px;color:#7c8996}
+.home-price-card em{font-size:9px;font-style:normal;font-weight:900;text-align:left}
+.home-category-section{height:180px;padding:14px 0 18px;background:#f8fafc;border-bottom:1px solid #e7edf2}
+.category-heading{height:48px}
+.category-heading h2{font-size:20px;margin-top:7px}
+.home-category-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.home-category-card{height:103px;border:1px solid #dce4eb;border-radius:8px;background:linear-gradient(135deg,#f8fafc,#e8edf1);display:flex;align-items:center;justify-content:space-between;overflow:hidden;padding:0 12px 0 0}
+.home-category-card img{order:2;width:54%;height:100%;object-fit:cover;object-position:center}
+.home-category-card>div{order:1;min-width:43%;padding-right:4px}
+.home-category-card h3{font-size:15px;margin:0 0 12px;font-weight:900}
+.home-category-card span{font-size:9px;font-weight:800;color:#23384c}
+.home-trust-section{height:160px;background:url('/images/home-ref/trust.png') center/100% 100% no-repeat;padding:12px 0}
+.trust-ref-grid{height:136px;display:grid;grid-template-columns:1fr 1.75fr 1fr;gap:10px;direction:ltr;opacity:0}
+.trust-ref-grid>div{direction:rtl;border:1px solid #dce4eb;border-radius:8px;background:#fff}
+.trust-pay{background:#08233b!important;color:#fff;display:flex;align-items:center;gap:22px;padding:18px 26px}
+.trust-shield{width:56px;height:64px;border:4px solid #fff;border-radius:16px 16px 22px 22px;display:grid;place-items:center;font-size:25px;font-weight:900}
+.trust-pay h3{font-size:18px;line-height:1.45;margin:0 0 4px}
+.trust-pay p{font-size:9px;color:#d2dce4;margin:0 0 9px}
+.trust-pay a{font-size:9px;border:1px solid #fff;border-radius:5px;padding:5px 10px}
+.trust-badges{padding:12px 22px;text-align:center}
+.trust-badges h3{font-size:15px;margin:0 0 13px}
+.trust-badges>div{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.trust-badges span{display:flex;flex-direction:column;align-items:center;gap:4px;border-left:1px solid #edf1f4}
+.trust-badges span:last-child{border-left:0}
+.trust-badges i{width:38px;height:38px;border-radius:50%;background:#f2f5f7;display:grid;place-items:center;font-style:normal;font-size:18px;color:#173654}
+.trust-badges b{font-size:8px}
+.trust-support{display:flex;align-items:center;gap:17px;padding:18px}
+.support-icon{width:58px;height:58px;border-radius:50%;background:#edf2f6;display:grid;place-items:center;font-size:30px}
+.trust-support h3{font-size:14px;margin:0 0 5px}
+.trust-support p{font-size:8px;color:#6f7f8f;margin:0 0 9px}
+.trust-support a{font-size:9px;border:1px solid #b9c7d3;border-radius:5px;padding:5px 10px}
+.home-v2-body .site-footer{height:186px;padding-top:18px;background:url('/images/home-ref/footer.png') center/100% 100% no-repeat}
+.home-v2-body .footer-grid,.home-v2-body .footer-bottom{opacity:0}
+.home-v2-body .footer-grid{grid-template-columns:1.2fr .7fr .7fr .8fr 1.25fr;gap:28px;direction:ltr}
+.home-v2-body .footer-grid>div{direction:rtl}
+.home-v2-body .footer-brand p,.home-v2-body .newsletter p{font-size:8px;margin:7px 0}
+.home-v2-body .footer-grid h4{font-size:10px;margin-bottom:6px}
+.home-v2-body .footer-grid a,.home-v2-body .footer-grid span{font-size:8px;line-height:1.45}
+.home-v2-body .socials span{width:22px;height:22px;font-size:8px}
+.home-v2-body .newsletter input{padding:6px 8px;font-size:8px}
+.home-v2-body .newsletter button{padding:5px 10px;font-size:8px}
+.home-v2-body .footer-bottom{margin-top:12px;padding:7px 0}
+.home-v2-body .footer-bottom span{font-size:7px}
+@media(max-width:1100px){
+ .home-v2-body .nav{gap:18px}.home-v2-body .nav a{font-size:10px}
+ .hero-ref{background-size:cover;background-position:center}
+ .hero-hotspot{display:none}
+ .home-price-grid,.home-category-grid{grid-template-columns:repeat(5,minmax(160px,1fr));overflow-x:auto;padding-bottom:5px}
+ .home-price-card,.home-category-card{min-width:190px}
+ .trust-ref-grid{grid-template-columns:1fr 1.4fr}.trust-support{display:none}
+}
+@media(max-width:820px){
+ .home-v2-body .shell{width:calc(100% - 28px)}
+ .home-v2-body .site-header{height:66px;background:#071b2d}.home-v2-body .header-row{height:66px}
+ .home-v2-body .header-row>*{opacity:1}
+ .home-v2-body .home-trust-section{background:#fff}.home-v2-body .trust-ref-grid{opacity:1}
+ .home-v2-body .site-footer{background:#071c2f}.home-v2-body .footer-grid,.home-v2-body .footer-bottom{opacity:1}
+ .home-v2-body .nav{top:66px}.home-v2-body .orange-link{display:none}
+ .hero-ref{height:390px;background:linear-gradient(105deg,#071d31,#123b5b)}
+ .hero-mobile{display:block;color:#fff;padding-top:70px}
+ .hero-mobile>span{color:#ff8a3c;font-size:11px;font-weight:800}
+ .hero-mobile h1{font-size:36px;line-height:1.45;margin:9px 0}
+ .hero-mobile p{font-size:13px;color:#d7e0e8;max-width:520px}
+ .hero-mobile>div{display:flex;gap:9px;margin-top:22px}
+ .home-price-section,.home-category-section,.home-trust-section,.home-v2-body .site-footer{height:auto}
+ .home-price-section{padding:25px 0}.home-category-section{padding:22px 0}
+ .trust-ref-grid{height:auto;grid-template-columns:1fr}.trust-support{display:flex}.trust-badges{min-height:135px}
+ .home-v2-body .site-footer{padding-bottom:10px}
+}
+@media(max-width:540px){
+ .home-section-heading{height:auto;min-height:70px}.home-section-heading>div{margin:0;text-align:right}
+ .home-section-heading>a{top:4px}
+ .hero-mobile h1{font-size:29px}
+ .hero-mobile>div{flex-direction:column;align-items:stretch}
+ .trust-badges>div{grid-template-columns:1fr 1fr}
+ .home-v2-body .footer-grid{grid-template-columns:1fr 1fr}
+}
