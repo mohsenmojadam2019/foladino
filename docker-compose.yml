@@ -1,0 +1,14 @@
+services:
+  web:
+    build: .
+    container_name: foladino-web
+    restart: unless-stopped
+    network_mode: host
+    command: php artisan serve --host=0.0.0.0 --port=8088
+    volumes:
+      - ./.env:/var/www/html/.env
+      - ./database:/var/www/html/database
+      - ./storage:/var/www/html/storage
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
