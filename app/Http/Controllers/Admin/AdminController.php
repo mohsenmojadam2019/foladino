@@ -10,11 +10,25 @@ use Illuminate\Support\Str;
 class AdminController extends Controller
 {
     public function dashboard(){
+        $paidOrders = PurchaseOrder::where('status','paid');
         $stats=[
-            'products'=>Product::count(),'quotes_new'=>QuoteRequest::where('status','new')->count(),'factories'=>Factory::count(),'articles'=>Article::count(),
-            'avg_price'=>(int) Product::avg('price'),'today_quotes'=>QuoteRequest::whereDate('created_at',today())->count()
+            'products'=>Product::count(),
+            'quotes_new'=>QuoteRequest::where('status','new')->count(),
+            'factories'=>Factory::count(),
+            'articles'=>Article::count(),
+            'avg_price'=>(int) Product::avg('price'),
+            'today_quotes'=>QuoteRequest::whereDate('created_at',today())->count(),
+            'orders'=>PurchaseOrder::count(),
+            'paid_orders'=>(clone $paidOrders)->count(),
+            'pending_orders'=>PurchaseOrder::whereIn('status',['pending','payment_started'])->count(),
+            'revenue'=>(int) ((clone $paidOrders)->sum('total_toman')),
         ];
-        return view('admin.dashboard',['stats'=>$stats,'quotes'=>QuoteRequest::latest()->take(6)->get(),'products'=>Product::with('factory')->orderByDesc('updated_at')->take(6)->get()]);
+        return view('admin.dashboard',[
+            'stats'=>$stats,
+            'quotes'=>QuoteRequest::latest()->take(6)->get(),
+            'products'=>Product::with(['factory','category'])->orderByDesc('updated_at')->take(6)->get(),
+            'orders'=>PurchaseOrder::with('product')->latest()->take(6)->get(),
+        ]);
     }
 
     public function catalog(){ return view('admin.catalog',['products'=>Product::with(['category','factory'])->latest()->get(),'categories'=>Category::orderBy('sort_order')->get(),'factories'=>Factory::orderBy('name')->get()]); }
