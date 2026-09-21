@@ -1,7 +1,17 @@
 document.addEventListener('DOMContentLoaded', () => {
   const menuBtn = document.getElementById('menuBtn');
   const nav = document.getElementById('mainNav');
-  if (menuBtn && nav) menuBtn.addEventListener('click', () => nav.classList.toggle('open'));
+  if (menuBtn && nav) {
+    menuBtn.addEventListener('click', () => nav.classList.toggle('open'));
+  }
+
+  const filterToggle = document.querySelector('[data-filter-toggle]');
+  const filters = document.getElementById('catalogFilters');
+  if (filterToggle && filters) {
+    filterToggle.addEventListener('click', () => {
+      if (window.matchMedia('(max-width: 860px)').matches) filters.classList.toggle('open');
+    });
+  }
 
   document.querySelectorAll('[data-qty]').forEach(input => {
     const target = document.querySelector(input.dataset.totalTarget || '#orderTotal');
@@ -14,6 +24,16 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     input.addEventListener('input', update);
     update();
+  });
+
+  document.querySelectorAll('.radio-row input[type="radio"]').forEach(input => {
+    input.addEventListener('change', () => {
+      const name = input.name;
+      if (!name) return;
+      document.querySelectorAll('.radio-row input[name="' + name + '"]').forEach(item => {
+        item.closest('.radio-row')?.classList.toggle('selected', item.checked);
+      });
+    });
   });
 
   setTimeout(() => document.querySelectorAll('.flash').forEach(f => {

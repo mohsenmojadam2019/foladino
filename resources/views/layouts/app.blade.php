@@ -7,16 +7,17 @@
     <title>@yield('title','فولادینو') | فروش عمده محصولات فولادی</title>
     <meta name="description" content="@yield('description','فروش مستقیم و عمده محصولات فولادی فولادینو با قیمت روز، سفارش آنلاین و ارسال سراسر کشور')">
     <link rel="icon" href="{{ $siteSettings['logo_image'] ?? '/images/logo-mark.svg' }}">
-    <link rel="stylesheet" href="/css/site.css">
+    <link rel="stylesheet" href="/css/site.css?v=14050701">
     @stack('styles')
 </head>
 <body class="@yield('body_class')">
 <header class="site-header">
     <div class="shell header-row">
-        <a class="brand" href="{{ route('home') }}">
+        <a class="brand" href="{{ route('home') }}" aria-label="فولادینو">
             <span class="brand-mark"><img src="{{ $siteSettings['logo_image'] ?? '/images/logo-mark.svg' }}" alt=""></span>
-            <span><strong>فولادینو</strong><small>قدرت در اعتماد</small></span>
+            <span class="brand-copy"><strong>فولادینو</strong><small>قدرت در اعتماد</small></span>
         </a>
+
         <nav class="nav" id="mainNav">
             <a class="{{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">خانه</a>
             <a class="{{ request()->routeIs('products') ? 'active' : '' }}" href="{{ route('products') }}">محصولات</a>
@@ -25,10 +26,13 @@
             <a class="{{ request()->routeIs('about') ? 'active' : '' }}" href="{{ route('about') }}">درباره ما</a>
             <a class="{{ request()->routeIs('contact') ? 'active' : '' }}" href="{{ route('contact') }}">تماس با ما</a>
         </nav>
+
         <div class="header-actions">
-            <a class="outline-link" href="tel:02191003333">۰۲۱-۹۱۰۰۳۳۳۳</a>
-            <a class="orange-link" href="/admin">ورود / ثبت‌نام سازمانی</a>
-            <button id="menuBtn" class="menu-btn" type="button">☰</button>
+            <a class="header-phone" href="tel:02191003333">
+                <span>☎</span><b>۰۲۱-۹۱۰۰۳۳۳۳</b>
+            </a>
+            <a class="orange-link" href="/admin"><span>👤</span> ورود / ثبت نام سازمانی</a>
+            <button id="menuBtn" class="menu-btn" type="button" aria-label="منو">☰</button>
         </div>
     </div>
 </header>
@@ -44,19 +48,46 @@
         <div class="footer-brand">
             <a class="brand" href="{{ route('home') }}">
                 <span class="brand-mark"><img src="{{ $siteSettings['logo_image'] ?? '/images/logo-mark.svg' }}" alt=""></span>
-                <span><strong>فولادینو</strong><small>قدرت در اعتماد</small></span>
+                <span class="brand-copy"><strong>فولادینو</strong><small>قدرت در اعتماد</small></span>
             </a>
-            <p>تولید و عرضه مستقیم محصولات فولادی فولادینو برای پروژه‌های ساختمانی، صنعتی و سازمانی.</p>
-            <div class="socials"><span>in</span><span>◎</span><span>✈</span></div>
+            <p>تولیدکننده و تأمین‌کننده مطمئن انواع مقاطع فولادی برای پروژه‌های بزرگ در سراسر ایران.</p>
+            <div class="socials"><span>in</span><span>◎</span><span>➤</span><span>◉</span></div>
         </div>
-        <div><h4>دسترسی سریع</h4><a href="{{ route('home') }}">خانه</a><a href="{{ route('products') }}">محصولات</a><a href="{{ route('prices') }}">قیمت روز</a><a href="{{ route('bulk-order') }}">سفارش عمده</a></div>
-        <div><h4>محصولات</h4>@foreach(($categories ?? collect())->take(6) as $c)<a href="{{ route('products',['category'=>$c->slug]) }}">{{ $c->name }}</a>@endforeach</div>
-        <div><h4>خدمات مشتریان</h4><a href="{{ route('about') }}">درباره فولادینو</a><a href="{{ route('contact') }}">تماس با ما</a><a href="{{ route('bulk-order') }}">راهنمای خرید عمده</a><span>ارسال سراسر کشور</span></div>
-        <div class="newsletter"><h4>عضویت در خبرنامه</h4><p>از آخرین قیمت‌ها و موجودی محصولات مطلع شوید.</p><div><input placeholder="ایمیل سازمانی شما"><button>اشتراک</button></div></div>
+
+        <div class="footer-links">
+            <h4>دسترسی سریع</h4>
+            <a href="{{ route('home') }}">خانه</a><a href="{{ route('products') }}">محصولات</a>
+            <a href="{{ route('prices') }}">قیمت روز</a><a href="{{ route('bulk-order') }}">سفارش عمده</a>
+            <a href="{{ route('about') }}">درباره ما</a><a href="{{ route('contact') }}">تماس با ما</a>
+        </div>
+
+        <div class="footer-links">
+            <h4>محصولات</h4>
+            @foreach(($categories ?? collect())->take(6) as $c)
+                <a href="{{ route('products',['category'=>$c->slug]) }}">{{ $c->name }}</a>
+            @endforeach
+        </div>
+
+        <div class="footer-links">
+            <h4>خدمات مشتریان</h4>
+            <a href="{{ route('contact') }}">سوالات متداول</a>
+            <a href="{{ route('bulk-order') }}">راهنمای ثبت سفارش</a>
+            <span>شرایط ارسال</span><span>شرایط بازگشت</span><span>حریم خصوصی</span><span>قوانین و مقررات</span>
+        </div>
+
+        <div class="newsletter">
+            <h4>عضویت در خبرنامه</h4>
+            <p>از آخرین قیمت‌ها و اخبار فولادینو مطلع شوید.</p>
+            <div><input type="email" placeholder="ایمیل سازمانی شما"><button type="button">اشتراک</button></div>
+        </div>
     </div>
-    <div class="shell footer-bottom"><span>تمامی حقوق این وب‌سایت متعلق به شرکت فولادینو است. © {{ jdate_fa(now(),'Y') }}</span><span>باهم، سازنده فردا</span></div>
+    <div class="shell footer-bottom">
+        <span>تمامی حقوق این وب‌سایت متعلق به شرکت فولادینو است. © {{ jdate_fa(now(),'Y') }}</span>
+        <strong>باهم، سازنده فردا</strong>
+    </div>
 </footer>
-<script src="/js/site.js"></script>
+
+<script src="/js/site.js?v=14050701"></script>
 @stack('scripts')
 </body>
 </html>
