@@ -7,3 +7,14 @@
 
 .nav-icon{position:relative;width:30px;height:34px;display:grid;place-items:center;color:#54708e;font-size:18px;border-left:1px solid #edf2f7;padding-left:9px}.nav-icon i{position:absolute;top:1px;right:-3px;min-width:14px;height:14px;padding:0 3px;border-radius:8px;background:#0d7df2;color:#fff;font-size:8px;font-style:normal;display:grid;place-items:center}.nav-icon:hover{color:var(--blue)}
 .hidden{display:none!important}
+
+/* Reference layout tuning */
+@media(min-width:821px){
+  .container{width:min(1040px,calc(100% - 48px))}
+  .hero-grid{grid-template-columns:390px 1fr 280px;gap:22px;min-height:300px}
+  .hero-copy h1{font-size:42px}
+  .hero-visual{height:250px}
+  .market-card{padding:14px}
+  .category-card{min-height:78px;padding:9px 11px}
+  .category-card img{width:78px;height:48px}
+}
