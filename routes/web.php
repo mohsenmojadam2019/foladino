@@ -15,6 +15,7 @@ Route::get('/contact', [HomeController::class,'contact'])->name('contact');
 Route::post('/quote', [QuoteController::class,'store'])->name('quote.store')->middleware('throttle:10,1');
 Route::post('/checkout', [CheckoutController::class,'start'])->name('checkout.start')->middleware('throttle:10,1');
 Route::get('/payment/callback/{token}', [CheckoutController::class,'callback'])->name('payment.callback');
+Route::get('/orders/{token}/invoice', [CheckoutController::class,'invoice'])->name('orders.invoice');
 
 Route::prefix('admin')->name('admin.')->group(function(){
     Route::get('/login',[AuthController::class,'showLogin'])->name('login');

@@ -88,11 +88,20 @@ class CheckoutController extends Controller
         $order->update([
             'status' => 'paid',
             'authority' => $authority,
+            'reference_id' => $verified['ref_id'] ?? null,
+            'paid_at' => now(),
         ]);
 
         return view('payment-result', [
             'order' => $order->fresh('product'),
             'success' => true,
         ]);
+    }
+
+    public function invoice(string $token): View
+    {
+        $order = PurchaseOrder::with(['product.factory'])->where('public_token', $token)->firstOrFail();
+        abort_unless($order->status === 'paid', 403, 'فاکتور فقط برای سفارش پرداخت‌شده قابل مشاهده است.');
+        return view('invoice', compact('order'));
     }
 }

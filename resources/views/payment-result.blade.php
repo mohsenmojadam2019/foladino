@@ -18,6 +18,7 @@
       </div>
       <div class="order-actions" style="margin-top:16px">
         <a class="btn primary big" href="{{ route('products') }}">بازگشت به محصولات</a>
+        @if($success)<a class="btn outline big" href="{{ route('orders.invoice',$order->public_token) }}" target="_blank">مشاهده فاکتور</a>@endif
         <a class="btn outline big" href="{{ route('contact') }}">تماس با فروش</a>
       </div>
     </div>
