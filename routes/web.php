@@ -61,6 +61,7 @@ Route::prefix('admin')->name('admin.')->group(function(){
 
         Route::middleware('role:super_admin,admin')->group(function(){
             Route::get('/orders',[AdminController::class,'orders'])->name('orders');
+            Route::get('/shipping-rates',[AdminController::class,'shippingRates'])->name('shipping-rates');
             Route::put('/orders/{order}',[AdminController::class,'orderUpdate'])->name('orders.update');
             Route::post('/shipping-rates',[AdminController::class,'shippingRateStore'])->name('shipping-rates.store');
             Route::get('/quotes',[AdminController::class,'quotes'])->name('quotes');

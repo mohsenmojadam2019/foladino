@@ -57,6 +57,7 @@ class AdminController extends Controller
     }
 
     public function orders(){ return view('admin.orders',['orders'=>Schema::hasTable('purchase_orders') ? PurchaseOrder::with(['product','items'])->latest()->get() : collect()]); }
+    public function shippingRates(){ return view('admin.shipping-rates',['rates'=>ShippingRate::latest()->get()]); }
     public function shippingRateStore(Request $r){$d=$r->validate(['origin_city'=>'required|max:80','destination_city'=>'required|max:80','min_weight_kg'=>'required|integer|min:0','max_weight_kg'=>'nullable|integer|gte:min_weight_kg','base_price_toman'=>'required|integer|min:0','price_per_kg_toman'=>'required|integer|min:0']); ShippingRate::create($d+['is_active'=>true]); return back()->with('success','نرخ حمل ثبت شد.');}
     public function orderUpdate(Request $r, PurchaseOrder $order){ $d=$r->validate(['status'=>'required|in:pending,payment_started,paid,processing,ready,shipped,delivered,cancelled,failed','admin_note'=>'nullable|string|max:1000']); $order->update($d); return back()->with('success','وضعیت سفارش به‌روزرسانی شد.'); }
 
