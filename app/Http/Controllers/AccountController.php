@@ -1,0 +1,33 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\PurchaseOrder;
+use App\Models\User;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\View\View;
+
+class AccountController extends Controller
+{
+    public function login(): View { return view('account.login'); }
+    public function authenticate(Request $request): RedirectResponse
+    {
+        $credentials = $request->validate(['email'=>'required|email','password'=>'required|string']);
+        if (!Auth::attempt($credentials, $request->boolean('remember'))) return back()->withErrors(['email'=>'اطلاعات ورود صحیح نیست.'])->withInput();
+        $request->session()->regenerate(); return redirect()->intended(route('account.orders'));
+    }
+    public function register(): View { return view('account.register'); }
+    public function store(Request $request): RedirectResponse
+    {
+        $data = $request->validate(['name'=>'required|string|max:120','email'=>'required|email|unique:users,email','mobile'=>'required|string|max:20','password'=>'required|string|min:8|confirmed']);
+        $user = User::create($data + ['password'=>Hash::make($data['password']), 'role'=>'customer', 'is_active'=>true]);
+        Auth::login($user); return redirect()->route('account.orders');
+    }
+    public function logout(Request $request): RedirectResponse { Auth::logout(); $request->session()->invalidate(); $request->session()->regenerateToken(); return redirect()->route('home'); }
+    public function orders(): View { return view('account.orders', ['orders'=>PurchaseOrder::with('items')->where('user_id',Auth::id())->latest()->paginate(12)]); }
+    public function profile(): View { return view('account.profile', ['user'=>Auth::user()]); }
+    public function update(Request $request): RedirectResponse { $user=Auth::user(); $user->update($request->validate(['name'=>'required|string|max:120','mobile'=>'required|string|max:20','company_name'=>'nullable|string|max:180','national_id'=>'nullable|string|max:20','economic_code'=>'nullable|string|max:20','default_address'=>'nullable|string|max:1000'])); return back()->with('success','پروفایل به‌روزرسانی شد.'); }
+}
