@@ -4,7 +4,7 @@
   "description": "Fooladino B2B steel marketplace and organizational admin panel",
   "license": "proprietary",
   "require": {
-    "php": "^8.4",
+    "php": ">=8.3 <9.0",
       "barryvdh/laravel-dompdf": "^3.1.2",
     "laravel/framework": "^13.0",
     "laravel/tinker": "^3.0",
