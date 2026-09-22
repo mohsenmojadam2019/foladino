@@ -6,7 +6,6 @@
   $upCount=$products->where('price_change','>',0)->count();
   $downCount=$products->where('price_change','<',0)->count();
   $avgChange=(float)$products->avg('price_change');
-  $visuals=['rebar'=>'/images/home-ref/rebar.png','beam'=>'/images/home-ref/beam.png','sheet'=>'/images/home-ref/sheet.png','profile'=>'/images/home-ref/profile.png','angle'=>'/images/home-ref/angle.png','pipe'=>'/images/pipe.svg'];
 @endphp
 <main>
 <section class="page-hero">
@@ -64,7 +63,7 @@
                 $isDown=$p->price_change<0;
               @endphp
               <tr>
-                <td><div class="table-product"><img src="{{ $visuals[$p->category?->slug] ?? $p->image }}" alt=""><b>{{ $p->name }}</b></div></td>
+                <td><div class="table-product"><img src="{{ $p->image }}" alt="{{ $p->name }}" loading="lazy"><b>{{ $p->name }}</b></div></td>
                 <td>{{ $p->size }} · {{ $p->standard }}</td>
                 <td>{{ $p->unit }}</td>
                 <td><strong>{{ money_fa($p->price) }}</strong></td>

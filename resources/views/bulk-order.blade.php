@@ -2,8 +2,7 @@
 @section('title','سفارش عمده')
 @section('content')
 @php
-  $visuals=['rebar'=>'/images/home-ref/rebar.png','beam'=>'/images/home-ref/beam.png','sheet'=>'/images/home-ref/sheet.png','profile'=>'/images/home-ref/profile.png','angle'=>'/images/home-ref/angle.png','pipe'=>'/images/pipe.svg'];
-  $mainImage=$visuals[$product->category?->slug] ?? $product->image;
+  $mainImage=$product->image;
 @endphp
 <main>
 <section class="page-hero">
@@ -23,10 +22,10 @@
           <span class="image-note">کیفیت واقعی، پروژه‌های ماندگار</span>
         </div>
         <div class="thumbs">
-          <img src="{{ $mainImage }}" alt="">
-          <img src="/images/rebar.svg" alt="">
-          <img src="/images/coil.svg" alt="">
-          <img src="/images/project.svg" alt="">
+          <img src="{{ $mainImage }}" alt="{{ $product->name }}">
+          <img src="{{ $product->category?->icon }}" alt="{{ $product->category?->name }}">
+          <img src="/images/hero/order-hero.jpg" alt="انبار و بارگیری فولاد">
+          <img src="/images/hero/about-plant.jpg" alt="کارخانه فولادینو">
         </div>
       </section>
 

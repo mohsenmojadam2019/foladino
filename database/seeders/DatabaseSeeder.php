@@ -16,32 +16,126 @@ class DatabaseSeeder extends Seeder
         User::updateOrCreate(['email'=>'pricing@fooladino.ir'], ['name'=>'مدیر قیمت‌گذاری','password'=>Hash::make('Pricing@1405'),'role'=>'pricing','is_active'=>true]);
 
         $cats = [
-            ['میلگرد','rebar','rebar.svg'],['تیرآهن','beam','beam.svg'],['ورق','sheet','sheet.svg'],['لوله','pipe','pipe.svg'],['پروفیل','profile','profile.svg'],['نبشی و ناودانی','angle','angle.svg']
+            ['میلگرد','rebar','/images/categories/rebar.jpg'],
+            ['تیرآهن','beam','/images/categories/beam.jpg'],
+            ['ورق','sheet','/images/categories/sheet.jpg'],
+            ['لوله','pipe','/images/categories/pipe.jpg'],
+            ['پروفیل','profile','/images/categories/profile.jpg'],
+            ['نبشی و ناودانی','angle','/images/categories/angle.jpg'],
         ];
-        foreach ($cats as $i=>$c) Category::updateOrCreate(['slug'=>$c[1]], ['name'=>$c[0],'icon'=>'/images/'.$c[2],'sort_order'=>$i+1,'is_active'=>true]);
+        foreach ($cats as $i=>$c) Category::updateOrCreate(
+            ['slug'=>$c[1]],
+            ['name'=>$c[0],'icon'=>$c[2],'sort_order'=>$i+1,'is_active'=>true]
+        );
 
         $factories = [
-            ['ذوب آهن اصفهان','zobahan','اصفهان','اصفهان'],['فولاد مبارکه','mobarekeh','اصفهان','مبارکه'],['فولاد خوزستان','khouzestan','خوزستان','اهواز'],['فایکو','faico','مازندران','ساری'],['مجتمع فولاد خراسان','khorasan','خراسان رضوی','نیشابور'],['نورد و لوله سپاهان','sepahan','اصفهان','اصفهان']
+            ['ذوب آهن اصفهان','zobahan','اصفهان','اصفهان'],
+            ['فولاد مبارکه','mobarekeh','اصفهان','مبارکه'],
+            ['فولاد خوزستان','khouzestan','خوزستان','اهواز'],
+            ['فایکو','faico','مازندران','ساری'],
+            ['مجتمع فولاد خراسان','khorasan','خراسان رضوی','نیشابور'],
+            ['نورد و لوله سپاهان','sepahan','اصفهان','اصفهان'],
         ];
-        foreach ($factories as $f) Factory::updateOrCreate(['slug'=>$f[1]], ['name'=>$f[0],'province'=>$f[2],'city'=>$f[3],'logo'=>'/images/factory.svg','is_active'=>true]);
+        foreach ($factories as $f) Factory::updateOrCreate(
+            ['slug'=>$f[1]],
+            ['name'=>$f[0],'province'=>$f[2],'city'=>$f[3],'logo'=>'/images/factory.svg','is_active'=>true]
+        );
 
-        $products = [
-            ['میلگرد آجدار ۱۴ A3','rebar-14-a3','RB-14-A3','rebar','zobahan','۱۴','A3',28400,2.3,'/images/rebar.svg'],
-            ['تیرآهن ۱۶ IPE','beam-16-ipe','BM-16-IPE','beam','faico','۱۶','IPE',32100,1.1,'/images/beam.svg'],
-            ['ورق گرم ۲ میلی‌متر','hot-sheet-2','SH-HOT-2','sheet','mobarekeh','۲ میلی‌متر','ST37',29750,-0.8,'/images/sheet.svg'],
-            ['لوله صنعتی ۲ اینچ','pipe-2-inch','PI-2','pipe','sepahan','۲ اینچ','صنعتی',31200,1.6,'/images/pipe.svg'],
-            ['پروفیل ۴۰×۴۰','profile-40','PR-4040','profile','khouzestan','۴۰×۴۰','ST37',27900,0.9,'/images/profile.svg'],
-            ['نبشی ۵۰×۵۰','angle-50','AN-5050','angle','zobahan','۵۰×۵۰','L',30100,0.4,'/images/angle.svg'],
+        $factorySlugs = array_column($factories, 1);
+        $rows = [];
+        $seq = 0;
+        $faNum = fn($value) => strtr((string)$value, ['0'=>'۰','1'=>'۱','2'=>'۲','3'=>'۳','4'=>'۴','5'=>'۵','6'=>'۶','7'=>'۷','8'=>'۸','9'=>'۹','.'=>'٫']);
+        $push = function(string $category, string $slug, string $sku, string $name, string $size, string $standard, int $basePrice) use (&$rows,&$seq,$factorySlugs) {
+            $rows[] = [
+                'category'=>$category,
+                'slug'=>$slug,
+                'sku'=>$sku,
+                'name'=>$name,
+                'size'=>$size,
+                'standard'=>$standard,
+                'factory'=>$factorySlugs[$seq % count($factorySlugs)],
+                'price'=>$basePrice + (($seq % 10) * 170) + ((int) floor($seq / 10) * 35),
+                'change'=>round((($seq % 11) - 5) * 0.23, 2),
+                'stock'=>($seq % 19 === 0 ? 'call' : 'available'),
+                'featured'=>($seq % 30 < 3),
+            ];
+            $seq++;
+        };
+
+        foreach ([8,10,12,14,16,18,20,22,25,28] as $size) {
+            foreach (['A2','A3','A4'] as $standard) {
+                $push('rebar', "rebar-{$size}-".strtolower($standard), "RB-{$size}-{$standard}", 'میلگرد آجدار '.$faNum($size).' '.$standard, $faNum($size), $standard, 28350);
+            }
+        }
+
+        foreach ([12,14,16,18,20,22,24,27,30,32] as $size) {
+            foreach (['IPE','IPB','INP'] as $standard) {
+                $push('beam', "beam-{$size}-".strtolower($standard), "BM-{$size}-{$standard}", 'تیرآهن '.$faNum($size).' '.$standard, $faNum($size), $standard, 31800);
+            }
+        }
+
+        foreach (['1.5','2','2.5','3','4','5','6','8','10','12'] as $thickness) {
+            foreach (['ST37','ST52','A283'] as $standard) {
+                $slugThickness = str_replace('.', '-', $thickness);
+                $push('sheet', "sheet-{$slugThickness}-".strtolower($standard), "SH-{$slugThickness}-{$standard}", 'ورق فولادی '.$faNum($thickness).' میلی‌متر '.$standard, $faNum($thickness).' میلی‌متر', $standard, 29400);
+            }
+        }
+
+        $pipeSizes = [
+            ['0-5','۱/۲'],['0-75','۳/۴'],['1','۱'],['1-25','۱ ۱/۴'],['1-5','۱ ۱/۲'],
+            ['2','۲'],['2-5','۲ ۱/۲'],['3','۳'],['4','۴'],['6','۶']
         ];
-        foreach ($products as $idx=>$p) {
-            $product = Product::updateOrCreate(['slug'=>$p[1]], [
-                'name'=>$p[0],'sku'=>$p[2],'category_id'=>Category::whereSlug($p[3])->value('id'),'factory_id'=>Factory::whereSlug($p[4])->value('id'),
-                'size'=>$p[5],'standard'=>$p[6],'unit'=>'کیلوگرم','price'=>$p[7],'price_change'=>$p[8],'stock_status'=>'available','image'=>$p[9],
-                'description'=>'محصول تولیدی فولادینو برای فروش مستقیم و عمده، با کنترل مشخصات فنی، قیمت روز و امکان ارسال به سراسر کشور.','is_featured'=>true,'is_active'=>true
+        $pipeKinds = [
+            ['industrial','صنعتی'],['seamless','مانیسمان'],['galvanized','گالوانیزه']
+        ];
+        foreach ($pipeSizes as [$sizeSlug,$sizeName]) {
+            foreach ($pipeKinds as [$kindSlug,$kindName]) {
+                $push('pipe', "pipe-{$sizeSlug}-{$kindSlug}", "PI-{$sizeSlug}-".strtoupper(substr($kindSlug,0,3)), 'لوله '.$kindName.' '.$sizeName.' اینچ', $sizeName.' اینچ', $kindName, 30750);
+            }
+        }
+
+        foreach (['20x20','25x25','30x30','40x40','50x50','60x60','70x70','80x80','90x90','100x100'] as $dim) {
+            foreach (['1.5','2','2.5'] as $thickness) {
+                [$a,$b] = explode('x',$dim);
+                $slugThickness = str_replace('.', '-', $thickness);
+                $push('profile', "profile-{$dim}-{$slugThickness}", "PR-{$dim}-{$slugThickness}", 'پروفیل '.$faNum($a).'×'.$faNum($b).' ضخامت '.$faNum($thickness), $faNum($a).'×'.$faNum($b), 'ST37 / '.$faNum($thickness).'mm', 27650);
+            }
+        }
+
+        foreach ([30,40,50,60,70,80,90,100,120,140] as $size) {
+            foreach ([['angle','نبشی مساوی','L'],['unp','ناودانی UNP','UNP'],['upe','ناودانی UPE','UPE']] as [$kindSlug,$kindName,$standard]) {
+                $push('angle', "{$kindSlug}-{$size}", "AN-".strtoupper($kindSlug)."-{$size}", $kindName.' '.$faNum($size), $faNum($size), $standard, 29950);
+            }
+        }
+
+        foreach ($rows as $idx=>$p) {
+            $product = Product::updateOrCreate(['slug'=>$p['slug']], [
+                'name'=>$p['name'],
+                'sku'=>$p['sku'],
+                'category_id'=>Category::whereSlug($p['category'])->value('id'),
+                'factory_id'=>Factory::whereSlug($p['factory'])->value('id'),
+                'size'=>$p['size'],
+                'standard'=>$p['standard'],
+                'unit'=>'کیلوگرم',
+                'price'=>$p['price'],
+                'price_change'=>$p['change'],
+                'stock_status'=>$p['stock'],
+                'image'=>'/images/products/'.$p['slug'].'.jpg',
+                'description'=>'محصول فولادی برای فروش مستقیم و عمده؛ با کنترل مشخصات فنی، قیمت روز و امکان برنامه‌ریزی ارسال برای پروژه‌ها.',
+                'is_featured'=>$p['featured'],
+                'is_active'=>true,
             ]);
             PriceHistory::where('product_id',$product->id)->delete();
-            foreach ([5,4,3,2,1,0] as $d) PriceHistory::create(['product_id'=>$product->id,'price'=>max(1000,$p[7]-($d*110)+($idx*35)),'change_percent'=>$p[8],'recorded_at'=>$this->j('1405/06/'.str_pad((string)(29-$d),2,'0',STR_PAD_LEFT).' 10:42')]);
+            foreach ([6,5,4,3,2,1,0] as $d) {
+                PriceHistory::create([
+                    'product_id'=>$product->id,
+                    'price'=>max(1000,$p['price']-($d*95)+(($idx%7)*20)),
+                    'change_percent'=>$p['change'],
+                    'recorded_at'=>$this->j('1405/06/'.str_pad((string)(29-$d),2,'0',STR_PAD_LEFT).' 10:42')
+                ]);
+            }
         }
+        Product::whereIn('slug',['hot-sheet-2','pipe-2-inch','profile-40'])->delete();
 
         $articles = [
             ['تحلیل روند قیمت آهن‌آلات در شهریور ۱۴۰۵','steel-price-trend','بررسی محرک‌های بازار و رفتار قیمت میلگرد، تیرآهن و ورق در آخرین روزهای شهریور.','/images/article-market.svg','1405/06/29 09:10'],
@@ -59,13 +153,26 @@ class DatabaseSeeder extends Seeder
         QuoteRequest::query()->delete();
         QuoteRequest::insert([
             ['name'=>'شرکت عمران پارس','mobile'=>'09120000001','product_name'=>'میلگرد آجدار ۱۴','amount'=>25,'city'=>'تهران','status'=>'new','note'=>'تحویل در محل پروژه','created_at'=>$this->j('1405/06/29 11:20'),'updated_at'=>$this->j('1405/06/29 11:20')],
-            ['name'=>'بازرگانی آریا','mobile'=>'09120000002','product_name'=>'ورق گرم ۲ میلی‌متر','amount'=>12,'city'=>'کرج','status'=>'contacted','note'=>'نیاز به پیش‌فاکتور رسمی','created_at'=>$this->j('1405/06/28 15:10'),'updated_at'=>$this->j('1405/06/28 15:10')],
+            ['name'=>'بازرگانی آریا','mobile'=>'09120000002','product_name'=>'ورق فولادی ۲ میلی‌متر','amount'=>12,'city'=>'کرج','status'=>'contacted','note'=>'نیاز به پیش‌فاکتور رسمی','created_at'=>$this->j('1405/06/28 15:10'),'updated_at'=>$this->j('1405/06/28 15:10')],
         ]);
 
         $settings = [
-            'site_name'=>'فولادینو','phone'=>'۰۲۱-۹۱۰۰۳۳۳۳','support_phone'=>'۰۲۱-۹۱۰۰۷۰۰۰','email'=>'info@fooladino.ir','address'=>'تهران، دفتر مرکزی فولادینو',
-            'hero_title'=>'فروش عمده|محصولات فولادینو','hero_subtitle'=>'تولید و عرضه مستقیم محصولات فولادی با قیمت روز برای پروژه‌های بزرگ','annual_tons'=>'۱۰۰,۰۰۰+','active_customers'=>'۱۰,۰۰۰+','factories_count'=>'۵۰۰+',
-            'logo_image'=>'/images/logo-mark.svg','hero_image'=>'/images/hero-steel.svg','project_image'=>'/images/project.svg','delivery_map_image'=>'/images/iran-map.svg','cta_image'=>'/images/coil.svg','factory_default_image'=>'/images/factory.svg'
+            'site_name'=>'فولادینو',
+            'phone'=>'۰۲۱-۹۱۰۰۳۳۳۳',
+            'support_phone'=>'۰۲۱-۹۱۰۰۷۰۰۰',
+            'email'=>'info@fooladino.ir',
+            'address'=>'تهران، دفتر مرکزی فولادینو',
+            'hero_title'=>'فروش عمده|محصولات فولادینو',
+            'hero_subtitle'=>'تولید و عرضه مستقیم محصولات فولادی با قیمت روز برای پروژه‌های بزرگ',
+            'annual_tons'=>'۱۰۰,۰۰۰+',
+            'active_customers'=>'۱۰,۰۰۰+',
+            'factories_count'=>'۵۰۰+',
+            'logo_image'=>'/images/logo-mark.svg',
+            'hero_image'=>'/images/hero/home-hero.jpg',
+            'project_image'=>'/images/hero/about-plant.jpg',
+            'delivery_map_image'=>'/images/iran-map.svg',
+            'cta_image'=>'/images/hero/price-cta.jpg',
+            'factory_default_image'=>'/images/factory.svg'
         ];
         foreach ($settings as $k=>$v) Setting::updateOrCreate(['key'=>$k],['value'=>$v,'group'=>'general']);
     }

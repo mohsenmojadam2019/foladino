@@ -17,7 +17,7 @@
         <div><b>سراسری</b><span>پوشش ارسال</span></div>
       </div>
     </div>
-    <div class="about-visual"><img src="/images/home-ref/hero.png" alt="کارخانه و محصولات فولادینو"></div>
+    <div class="about-visual"><img src="/images/hero/about-plant.jpg" alt="کارخانه و محصولات فولادینو"></div>
   </div>
 </section>
 

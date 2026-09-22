@@ -33,10 +33,10 @@
       <label class="wide">عنوان Hero<input name="hero_title" value="{{ $settings['hero_title']??'' }}"></label>
       <label class="wide">زیرعنوان Hero<textarea name="hero_subtitle" rows="3">{{ $settings['hero_subtitle']??'' }}</textarea></label>
       <label>مسیر لوگو<input name="logo_image" value="{{ $settings['logo_image']??'/images/logo-mark.svg' }}"></label>
-      <label>تصویر Hero<input name="hero_image" value="{{ $settings['hero_image']??'/images/hero-steel.svg' }}"></label>
-      <label>تصویر پروژه<input name="project_image" value="{{ $settings['project_image']??'/images/project.svg' }}"></label>
+      <label>تصویر Hero<input name="hero_image" value="{{ $settings['hero_image']??'/images/hero/home-hero.jpg' }}"></label>
+      <label>تصویر پروژه<input name="project_image" value="{{ $settings['project_image']??'/images/hero/about-plant.jpg' }}"></label>
       <label>نقشه ارسال<input name="delivery_map_image" value="{{ $settings['delivery_map_image']??'/images/iran-map.svg' }}"></label>
-      <label>تصویر CTA<input name="cta_image" value="{{ $settings['cta_image']??'/images/coil.svg' }}"></label>
+      <label>تصویر CTA<input name="cta_image" value="{{ $settings['cta_image']??'/images/hero/price-cta.jpg' }}"></label>
     </div>
     <button class="btn btn-primary">ذخیره هویت بصری</button>
   </form>

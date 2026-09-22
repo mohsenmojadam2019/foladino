@@ -1,9 +1,6 @@
 @extends('layouts.app')
 @section('title','محصولات')
 @section('content')
-@php
-  $visuals=['rebar'=>'/images/home-ref/rebar.png','beam'=>'/images/home-ref/beam.png','sheet'=>'/images/home-ref/sheet.png','profile'=>'/images/home-ref/profile.png','angle'=>'/images/home-ref/angle.png','pipe'=>'/images/pipe.svg'];
-@endphp
 <main>
 <section class="page-hero">
   <div class="shell"><div>
@@ -61,7 +58,7 @@
         @forelse($products as $p)
         <article class="product-row">
           <div class="row-product">
-            <img src="{{ $visuals[$p->category?->slug] ?? $p->image }}" alt="{{ $p->name }}">
+            <img src="{{ $p->image }}" alt="{{ $p->name }}" loading="lazy">
             <div><h3>{{ $p->name }}</h3><small>{{ $p->category?->name }} · {{ $p->standard }}</small></div>
           </div>
 

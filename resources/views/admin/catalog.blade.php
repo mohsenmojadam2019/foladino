@@ -127,7 +127,7 @@
       <label>سایز<input name="size"></label><label>استاندارد<input name="standard"></label>
       <label>قیمت<input name="price" type="number" required></label><label>درصد تغییر<input name="price_change" type="number" step="0.01"></label>
       <label>وضعیت موجودی<select name="stock_status"><option value="available">موجود</option><option value="call">استعلام</option><option value="unavailable">ناموجود</option></select></label>
-      <label>تصویر<input name="image" value="/images/rebar.svg"></label>
+      <label>تصویر<input name="image" value="/images/categories/rebar.jpg"></label>
       <label class="check-line"><input type="checkbox" name="is_featured" value="1"> محصول ویژه</label>
       <label class="check-line"><input type="checkbox" name="is_active" value="1" checked> فعال</label>
       <button class="btn btn-primary full">ذخیره محصول</button>

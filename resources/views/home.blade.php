@@ -2,15 +2,7 @@
 @section('title','خانه')
 @section('content')
 @php
-  $visuals = [
-    'rebar'=>'/images/home-ref/rebar.png',
-    'beam'=>'/images/home-ref/beam.png',
-    'sheet'=>'/images/home-ref/sheet.png',
-    'profile'=>'/images/home-ref/profile.png',
-    'angle'=>'/images/home-ref/angle.png',
-    'pipe'=>'/images/pipe.svg',
-  ];
-  $priority = ['rebar','beam','sheet','profile','angle'];
+  $priority = ['rebar','beam','sheet','pipe','profile','angle'];
   $priceProducts = collect($priority)->map(fn($slug) => $products->first(fn($p) => $p->category?->slug === $slug))->filter();
   $homeCategories = collect($priority)->map(fn($slug) => $categories->firstWhere('slug',$slug))->filter();
 @endphp
@@ -43,7 +35,7 @@
     <div class="home-price-grid">
       @foreach($priceProducts as $p)
       <a class="home-price-card" href="{{ route('bulk-order',['product'=>$p->slug]) }}">
-        <img src="{{ $visuals[$p->category?->slug] ?? $p->image }}" alt="{{ $p->name }}">
+        <img src="{{ $p->image }}" alt="{{ $p->name }}" loading="lazy">
         <div><b>{{ $p->category?->name }}</b><strong>{{ money_fa($p->price) }}</strong><small>تومان / {{ $p->unit }}</small></div>
         <em class="{{ $p->price_change < 0 ? 'down' : 'up' }}">{{ $p->price_change > 0 ? '+' : '' }}{{ fa_digits($p->price_change) }}٪</em>
       </a>
@@ -62,7 +54,7 @@
       @foreach($homeCategories as $cat)
       <a class="home-category-card" href="{{ route('products',['category'=>$cat->slug]) }}">
         <div><h3>{{ $cat->name }}</h3><span>مشاهده محصولات ←</span></div>
-        <img src="{{ $visuals[$cat->slug] ?? $cat->icon }}" alt="{{ $cat->name }}">
+        <img src="{{ $cat->icon }}" alt="{{ $cat->name }}" loading="lazy">
       </a>
       @endforeach
     </div>

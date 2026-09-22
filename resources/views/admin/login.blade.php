@@ -9,7 +9,7 @@
 <body class="login-body">
 <main class="login-shell">
   <section class="login-art">
-    <img src="/images/home-ref/hero.png" alt="">
+    <img src="/images/hero/admin-login.jpg" alt="کارخانه فولادینو">
     <div>
       <span>پنل سازمانی فولادینو</span>
       <h1>مدیریت فروش، قیمت و سفارش‌ها<br>در یک فضای متمرکز</h1>
