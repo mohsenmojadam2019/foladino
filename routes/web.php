@@ -33,7 +33,7 @@ Route::get('/account/forgot-password', [AccountController::class,'forgot'])->nam
 Route::post('/account/forgot-password', [AccountController::class,'sendReset'])->name('account.forgot.submit');
 Route::get('/account/register', [AccountController::class,'register'])->name('account.register');
 Route::post('/account/register', [AccountController::class,'store'])->name('account.register.submit');
-Route::middleware('auth')->prefix('account')->name('account.')->group(function(){ Route::post('/logout',[AccountController::class,'logout'])->name('logout'); Route::get('/orders',[AccountController::class,'orders'])->name('orders'); Route::get('/profile',[AccountController::class,'profile'])->name('profile'); Route::put('/profile',[AccountController::class,'update'])->name('profile.update'); });
+Route::middleware('auth')->prefix('account')->name('account.')->group(function(){ Route::post('/logout',[AccountController::class,'logout'])->name('logout'); Route::get('/orders',[AccountController::class,'orders'])->name('orders'); Route::get('/orders/{order}',[AccountController::class,'order'])->name('order'); Route::post('/orders/{order}/cancel',[AccountController::class,'cancel'])->name('order.cancel'); Route::get('/profile',[AccountController::class,'profile'])->name('profile'); Route::put('/profile',[AccountController::class,'update'])->name('profile.update'); });
 Route::post('/checkout', [CheckoutController::class,'start'])->name('checkout.start')->middleware('throttle:10,1');
 Route::get('/payment/callback/{token}', [CheckoutController::class,'callback'])->name('payment.callback');
 Route::get('/orders/{token}/invoice', [CheckoutController::class,'invoice'])->name('orders.invoice');
