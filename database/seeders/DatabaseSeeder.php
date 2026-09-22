@@ -16,11 +16,11 @@ class DatabaseSeeder extends Seeder
         User::updateOrCreate(['email'=>'pricing@fooladino.ir'], ['name'=>'مدیر قیمت‌گذاری','password'=>Hash::make('Pricing@1405'),'role'=>'pricing','is_active'=>true]);
 
         $cats = [
-            ['میلگرد','rebar','/images/categories/rebar.jpg'],
-            ['تیرآهن','beam','/images/categories/beam.jpg'],
-            ['ورق','sheet','/images/categories/sheet.jpg'],
-            ['لوله','pipe','/images/categories/pipe.jpg'],
-            ['پروفیل','profile','/images/categories/profile.jpg'],
+            ['میلگرد','rebar','/images/generated/rebar-bundle.png'],
+            ['تیرآهن','beam','/images/generated/steel-sections.png'],
+            ['ورق','sheet','/images/generated/steel-sections.png'],
+            ['لوله','pipe','/images/generated/steel-sections.png'],
+            ['پروفیل','profile','/images/generated/steel-sections.png'],
             ['نبشی و ناودانی','angle','/images/categories/angle.jpg'],
         ];
         foreach ($cats as $i=>$c) Category::updateOrCreate(
@@ -168,10 +168,10 @@ class DatabaseSeeder extends Seeder
             'active_customers'=>'۱۰,۰۰۰+',
             'factories_count'=>'۵۰۰+',
             'logo_image'=>'/images/logo-mark.svg',
-            'hero_image'=>'/images/hero/home-hero.jpg',
-            'project_image'=>'/images/hero/about-plant.jpg',
+            'hero_image'=>'/images/generated/hero-warehouse.png',
+            'project_image'=>'/images/generated/construction-site.png',
             'delivery_map_image'=>'/images/iran-map.svg',
-            'cta_image'=>'/images/hero/price-cta.jpg',
+            'cta_image'=>'/images/generated/hero-warehouse.png',
             'factory_default_image'=>'/images/factory.svg'
         ];
         foreach ($settings as $k=>$v) Setting::updateOrCreate(['key'=>$k],['value'=>$v,'group'=>'general']);
