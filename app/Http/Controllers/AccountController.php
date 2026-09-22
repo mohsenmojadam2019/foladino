@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderInvoiceMail;
 use Illuminate\View\View;
 
 class AccountController extends Controller
@@ -33,6 +35,7 @@ class AccountController extends Controller
     public function orders(): View { return view('account.orders', ['orders'=>PurchaseOrder::with('items')->where('user_id',Auth::id())->latest()->paginate(12)]); }
     public function order(PurchaseOrder $order): View { abort_unless($order->user_id === Auth::id(), 403); return view('account.order', ['order'=>$order->load(['items.product','transactions'])]); }
     public function cancel(PurchaseOrder $order): RedirectResponse { abort_unless($order->user_id === Auth::id(), 403); abort_unless(in_array($order->status,['pending','payment_started'],true), 422, 'این سفارش دیگر قابل لغو نیست.'); $order->update(['status'=>'cancelled']); return back()->with('success','سفارش لغو شد.'); }
+    public function emailInvoice(PurchaseOrder $order): RedirectResponse { abort_unless($order->user_id === Auth::id(), 403); abort_unless(in_array($order->status,['paid','processing','ready','shipped','delivered'],true), 422); Mail::to(Auth::user()->email)->queue(new OrderInvoiceMail($order->load(['items','product.factory']))); return back()->with('success','فاکتور برای ایمیل شما ارسال شد.'); }
     public function profile(): View { return view('account.profile', ['user'=>Auth::user()]); }
     public function update(Request $request): RedirectResponse { $user=Auth::user(); $user->update($request->validate(['name'=>'required|string|max:120','mobile'=>'required|string|max:20','company_name'=>'nullable|string|max:180','national_id'=>'nullable|string|max:20','economic_code'=>'nullable|string|max:20','default_address'=>'nullable|string|max:1000'])); return back()->with('success','پروفایل به‌روزرسانی شد.'); }
 }
