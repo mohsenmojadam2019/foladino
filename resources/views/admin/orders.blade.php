@@ -38,7 +38,7 @@
         <td>{{ fa_digits($o->quantity_tons) }} تن</td>
         <td><strong>{{ money_fa($o->total_toman) }}</strong><small>تومان</small></td>
         <td>{{ $o->city ?: '—' }}</td>
-        <td><span class="status-badge {{ $o->status==='paid'?'won':($o->status==='failed'||$o->status==='cancelled'?'lost':'contacted') }}">{{ ['pending'=>'در انتظار','payment_started'=>'درگاه پرداخت','paid'=>'پرداخت‌شده','failed'=>'ناموفق','cancelled'=>'لغوشده'][$o->status] ?? $o->status }}</span></td>
+        <td><form method="post" action="{{ route('admin.orders.update',$o) }}" class="inline-status">@csrf @method('put')<select name="status" onchange="this.form.submit()">@foreach(['pending'=>'در انتظار','payment_started'=>'درگاه پرداخت','paid'=>'پرداخت‌شده','processing'=>'در حال آماده‌سازی','ready'=>'آماده ارسال','shipped'=>'ارسال‌شده','delivered'=>'تحویل‌شده','failed'=>'ناموفق','cancelled'=>'لغوشده'] as $key=>$label)<option value="{{ $key }}" @selected($o->status===$key)>{{ $label }}</option>@endforeach</select></form></td>
         <td>{{ jdate_fa($o->created_at,'Y/m/d H:i') }}</td>
       </tr>
       @empty

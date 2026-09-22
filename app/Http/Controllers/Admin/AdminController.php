@@ -56,7 +56,8 @@ class AdminController extends Controller
         return back()->with('success','قیمت جدید ثبت شد.');
     }
 
-    public function orders(){ return view('admin.orders',['orders'=>Schema::hasTable('purchase_orders') ? PurchaseOrder::with('product')->latest()->get() : collect()]); }
+    public function orders(){ return view('admin.orders',['orders'=>Schema::hasTable('purchase_orders') ? PurchaseOrder::with(['product','items'])->latest()->get() : collect()]); }
+    public function orderUpdate(Request $r, PurchaseOrder $order){ $d=$r->validate(['status'=>'required|in:pending,payment_started,paid,processing,ready,shipped,delivered,cancelled,failed','admin_note'=>'nullable|string|max:1000']); $order->update($d); return back()->with('success','وضعیت سفارش به‌روزرسانی شد.'); }
 
     public function quotes(){ return view('admin.quotes',['quotes'=>QuoteRequest::latest()->get()]); }
     public function quoteUpdate(Request $r, QuoteRequest $quote){ $d=$r->validate(['status'=>'required|in:new,contacted,quoted,won,lost','note'=>'nullable|string|max:1000']); $quote->update($d); return back()->with('success','وضعیت استعلام به‌روزرسانی شد.'); }

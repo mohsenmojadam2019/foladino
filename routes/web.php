@@ -60,6 +60,7 @@ Route::prefix('admin')->name('admin.')->group(function(){
 
         Route::middleware('role:super_admin,admin')->group(function(){
             Route::get('/orders',[AdminController::class,'orders'])->name('orders');
+            Route::put('/orders/{order}',[AdminController::class,'orderUpdate'])->name('orders.update');
             Route::get('/quotes',[AdminController::class,'quotes'])->name('quotes');
             Route::put('/quotes/{quote}',[AdminController::class,'quoteUpdate'])->name('quotes.update');
         });
