@@ -1,0 +1,7 @@
+@extends('layouts.app')
+@section('content')
+<main class="container page-shell"><div class="page-heading"><h1>تکمیل سفارش</h1><p>اطلاعات تحویل و نوع فاکتور را وارد کنید.</p></div>
+<div class="checkout-layout"><form method="post" action="{{ route('checkout.start') }}" class="checkout-form">@csrf
+<h2>اطلاعات مشتری و تحویل</h2><div class="checkout-fields"><input name="name" required placeholder="نام و نام خانوادگی"><input name="mobile" required placeholder="شماره موبایل"><input name="city" required placeholder="شهر مقصد"><select name="invoice_type" required><option value="personal">فاکتور شخصی</option><option value="official">فاکتور رسمی</option></select><textarea name="delivery_address" required placeholder="آدرس کامل تحویل"></textarea><select name="deposit_percent"><option value="100">پرداخت کامل</option><option value="50">۵۰٪ بیعانه</option><option value="30">۳۰٪ بیعانه</option></select></div><button class="btn btn-primary btn-lg" type="submit">ادامه به پرداخت ←</button></form>
+<aside class="checkout-summary"><h2>خلاصه سفارش</h2>@php($subtotal=0)@foreach($products as $product)@php($line=(int)($cart[$product->id]*1000*$product->price))@php($subtotal += $line)<div class="summary-row"><span>{{ $product->name }} <small>{{ fa_digits($cart[$product->id]) }} تن</small></span><b>{{ money_fa($line) }}</b></div>@endforeach<div class="summary-row"><span>جمع کالاها</span><b>{{ money_fa($subtotal) }}</b></div><p class="summary-note">هزینهٔ حمل پس از انتخاب شهر، وزن و کارخانه در مرحلهٔ ثبت سفارش محاسبه می‌شود.</p></aside></div></main>
+@endsection

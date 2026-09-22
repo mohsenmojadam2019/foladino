@@ -17,7 +17,12 @@ Route::post('/quote', [QuoteController::class,'store'])->name('quote.store')->mi
 Route::get('/cart', [CartController::class,'index'])->name('cart');
 Route::post('/cart/{product}', [CartController::class,'add'])->name('cart.add');
 Route::delete('/cart/{product}', [CartController::class,'remove'])->name('cart.remove');
-Route::get('/checkout', fn () => redirect()->route('cart'))->name('checkout');
+Route::get('/checkout', function (\Illuminate\Http\Request $request) {
+    $cart = $request->session()->get('cart', []);
+    abort_if(!$cart, 302, '', ['Location' => route('cart')]);
+    $products = \App\Models\Product::with('factory')->whereIn('id', array_keys($cart))->get()->keyBy('id');
+    return view('checkout', compact('cart', 'products'));
+})->name('checkout');
 Route::post('/checkout', [CheckoutController::class,'start'])->name('checkout.start')->middleware('throttle:10,1');
 Route::get('/payment/callback/{token}', [CheckoutController::class,'callback'])->name('payment.callback');
 Route::get('/orders/{token}/invoice', [CheckoutController::class,'invoice'])->name('orders.invoice');
