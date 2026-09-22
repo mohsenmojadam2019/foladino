@@ -180,3 +180,5 @@ button{cursor:pointer}
   .values-grid,.contact-cards{grid-template-columns:1fr}
   .footer-grid{grid-template-columns:1fr}.footer-brand,.newsletter{grid-column:auto}.footer-bottom{align-items:flex-start;flex-direction:column;gap:3px}
 }
+/* Product metadata is intentionally visible on every catalog card. */
+.product-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}.product-tags span{display:inline-flex;padding:2px 7px;border-radius:999px;background:#eef6fb;color:#315a78;font-size:8px;font-weight:800}.product-tags span+span{background:#fff2dc;color:#a56613}

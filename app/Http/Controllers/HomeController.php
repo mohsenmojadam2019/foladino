@@ -37,7 +37,10 @@ class HomeController extends Controller
                 ->orWhere('standard','like',"%{$q}%")
                 ->orWhere('size','like',"%{$q}%"));
         }
-        if ($request->filled('category')) {
+        // Support both the current slug filter and legacy category_id links.
+        if ($request->filled('category_id')) {
+            $query->where('category_id', (int) $request->input('category_id'));
+        } elseif ($request->filled('category')) {
             $query->whereHas('category', fn($x) => $x->where('slug', $request->category));
         }
         if ($request->filled('stock')) {
@@ -47,10 +50,11 @@ class HomeController extends Controller
             $query->whereHas('factory', fn($x) => $x->where('slug', $request->factory));
         }
 
-        $sort = (string) $request->input('sort');
-        if ($sort === 'price_asc') {
+        // Keep old catalog URLs working: order=inexpensive|expensive.
+        $sort = (string) ($request->input('sort') ?: $request->input('order'));
+        if (in_array($sort, ['price_asc', 'inexpensive'], true)) {
             $query->orderBy('price');
-        } elseif ($sort === 'price_desc') {
+        } elseif (in_array($sort, ['price_desc', 'expensive'], true)) {
             $query->orderByDesc('price');
         } else {
             $query->orderByDesc('is_featured')->orderBy('name');

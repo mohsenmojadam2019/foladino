@@ -47,11 +47,13 @@
 
     <div class="catalog-main">
       <form class="catalog-topbar" method="get" action="{{ route('products') }}">
+        @php($selectedSort = request('sort') ?: request('order'))
         @if(request('category'))<input type="hidden" name="category" value="{{ request('category') }}">@endif
+        @if(request('category_id'))<input type="hidden" name="category_id" value="{{ request('category_id') }}">@endif
         @if(request('stock'))<input type="hidden" name="stock" value="{{ request('stock') }}">@endif
         @if(request('factory'))<input type="hidden" name="factory" value="{{ request('factory') }}">@endif
         <div class="catalog-search"><input name="q" value="{{ request('q') }}" placeholder="جستجوی محصول، نام، کد کالا یا مشخصات..."><button class="btn primary">جستجو</button></div>
-        <div class="catalog-sort"><span>{{ fa_digits($products->total()) }} محصول</span><select name="sort" onchange="this.form.submit()"><option value="">پربازدیدترین</option><option value="price_asc" @selected(request('sort')==='price_asc')>کمترین قیمت</option><option value="price_desc" @selected(request('sort')==='price_desc')>بیشترین قیمت</option></select></div>
+        <div class="catalog-sort"><span>{{ fa_digits($products->total()) }} محصول</span><select name="sort" onchange="this.form.submit()"><option value="">پربازدیدترین</option><option value="price_asc" @selected($selectedSort === 'price_asc' || $selectedSort === 'inexpensive')>ارزان‌ترین</option><option value="price_desc" @selected($selectedSort === 'price_desc' || $selectedSort === 'expensive')>گران‌ترین</option></select></div>
       </form>
 
       <div class="product-list">
@@ -59,7 +61,7 @@
         <article class="product-row">
           <div class="row-product">
             <img src="{{ $p->image }}" alt="{{ $p->name }}" loading="lazy">
-            <div><h3>{{ $p->name }}</h3><small>{{ $p->category?->name }} · {{ $p->standard }}</small></div>
+            <div><h3>{{ $p->name }}</h3><small>{{ $p->category?->name }} · {{ $p->standard }}</small><div class="product-tags"><span>{{ $p->category?->name ?: 'محصول فولادی' }}</span>@if($p->is_featured)<span>ویژه</span>@endif</div></div>
           </div>
 
           <div class="row-specs">
