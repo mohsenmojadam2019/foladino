@@ -5,12 +5,14 @@ use App\Http\Controllers\Controller;
 use App\Models\{Article,Category,Factory,PriceHistory,Product,PurchaseOrder,QuoteRequest,Setting,User};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
     public function dashboard(){
-        $paidOrders = PurchaseOrder::where('status','paid');
+        $hasOrders = Schema::hasTable('purchase_orders');
+        $paidOrders = $hasOrders ? PurchaseOrder::where('status','paid') : null;
         $stats=[
             'products'=>Product::count(),
             'quotes_new'=>QuoteRequest::where('status','new')->count(),
@@ -18,16 +20,16 @@ class AdminController extends Controller
             'articles'=>Article::count(),
             'avg_price'=>(int) Product::avg('price'),
             'today_quotes'=>QuoteRequest::whereDate('created_at',today())->count(),
-            'orders'=>PurchaseOrder::count(),
-            'paid_orders'=>(clone $paidOrders)->count(),
-            'pending_orders'=>PurchaseOrder::whereIn('status',['pending','payment_started'])->count(),
-            'revenue'=>(int) ((clone $paidOrders)->sum('total_toman')),
+            'orders'=>$hasOrders ? PurchaseOrder::count() : 0,
+            'paid_orders'=>$hasOrders ? (clone $paidOrders)->count() : 0,
+            'pending_orders'=>$hasOrders ? PurchaseOrder::whereIn('status',['pending','payment_started'])->count() : 0,
+            'revenue'=>$hasOrders ? (int) ((clone $paidOrders)->sum('total_toman')) : 0,
         ];
         return view('admin.dashboard',[
             'stats'=>$stats,
             'quotes'=>QuoteRequest::latest()->take(6)->get(),
             'products'=>Product::with(['factory','category'])->orderByDesc('updated_at')->take(6)->get(),
-            'orders'=>PurchaseOrder::with('product')->latest()->take(6)->get(),
+            'orders'=>$hasOrders ? PurchaseOrder::with('product')->latest()->take(6)->get() : collect(),
         ]);
     }
 
@@ -54,7 +56,7 @@ class AdminController extends Controller
         return back()->with('success','قیمت جدید ثبت شد.');
     }
 
-    public function orders(){ return view('admin.orders',['orders'=>PurchaseOrder::with('product')->latest()->get()]); }
+    public function orders(){ return view('admin.orders',['orders'=>Schema::hasTable('purchase_orders') ? PurchaseOrder::with('product')->latest()->get() : collect()]); }
 
     public function quotes(){ return view('admin.quotes',['quotes'=>QuoteRequest::latest()->get()]); }
     public function quoteUpdate(Request $r, QuoteRequest $quote){ $d=$r->validate(['status'=>'required|in:new,contacted,quoted,won,lost','note'=>'nullable|string|max:1000']); $quote->update($d); return back()->with('success','وضعیت استعلام به‌روزرسانی شد.'); }
