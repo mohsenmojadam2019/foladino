@@ -35,6 +35,7 @@ Route::middleware('auth')->prefix('account')->name('account.')->group(function()
 Route::post('/checkout', [CheckoutController::class,'start'])->name('checkout.start')->middleware('throttle:10,1');
 Route::get('/payment/callback/{token}', [CheckoutController::class,'callback'])->name('payment.callback');
 Route::get('/orders/{token}/invoice', [CheckoutController::class,'invoice'])->name('orders.invoice');
+Route::get('/orders/{token}/invoice.pdf', [CheckoutController::class,'invoicePdf'])->name('orders.invoice.pdf');
 
 Route::prefix('admin')->name('admin.')->group(function(){
     Route::get('/login',[AuthController::class,'showLogin'])->name('login');
@@ -61,6 +62,7 @@ Route::prefix('admin')->name('admin.')->group(function(){
         Route::middleware('role:super_admin,admin')->group(function(){
             Route::get('/orders',[AdminController::class,'orders'])->name('orders');
             Route::put('/orders/{order}',[AdminController::class,'orderUpdate'])->name('orders.update');
+            Route::post('/shipping-rates',[AdminController::class,'shippingRateStore'])->name('shipping-rates.store');
             Route::get('/quotes',[AdminController::class,'quotes'])->name('quotes');
             Route::put('/quotes/{quote}',[AdminController::class,'quoteUpdate'])->name('quotes.update');
         });

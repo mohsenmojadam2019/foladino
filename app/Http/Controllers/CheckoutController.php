@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 use App\Services\ShippingCalculator;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Throwable;
 
 class CheckoutController extends Controller
@@ -125,5 +126,12 @@ class CheckoutController extends Controller
         $order = PurchaseOrder::with(['product.factory','items'])->where('public_token', $token)->firstOrFail();
         abort_unless($order->status === 'paid', 403, 'فاکتور فقط برای سفارش پرداخت‌شده قابل مشاهده است.');
         return view('invoice', compact('order'));
+    }
+
+    public function invoicePdf(string $token)
+    {
+        $order = PurchaseOrder::with(['product.factory','items'])->where('public_token', $token)->firstOrFail();
+        abort_unless(in_array($order->status, ['paid','processing','ready','shipped','delivered'], true), 403);
+        return Pdf::loadView('invoice', compact('order'))->setPaper('a4')->download(($order->order_number ?: 'invoice').'.pdf');
     }
 }
