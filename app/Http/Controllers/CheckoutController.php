@@ -104,12 +104,14 @@ class CheckoutController extends Controller
             PaymentTransaction::create(['purchase_order_id'=>$order->id,'gateway'=>$order->gateway,'authority'=>$authority,'amount_toman'=>$order->total_toman,'status'=>'failed','payload'=>$request->query()]);
             return view('payment-result', ['order' => $order, 'success' => false]);
         }
-        $order->update([
-            'status' => 'paid',
-            'authority' => $authority,
-            'reference_id' => $verified['ref_id'] ?? null,
-            'paid_at' => now(),
-        ]);
+        DB::transaction(function () use ($order, $authority, $verified) {
+            $order->load('items');
+            foreach ($order->items as $item) {
+                $updated = Product::whereKey($item->product_id)->where('stock_kg', '>=', $item->weight_kg)->decrement('stock_kg', $item->weight_kg);
+                abort_if($updated !== 1, 409, 'موجودی یکی از محصولات کافی نیست.');
+            }
+            $order->update(['status'=>'paid','authority'=>$authority,'reference_id'=>$verified['ref_id'] ?? null,'paid_at'=>now()]);
+        });
         PaymentTransaction::updateOrCreate(['purchase_order_id'=>$order->id,'authority'=>$authority],['gateway'=>$order->gateway,'reference_id'=>$verified['ref_id'] ?? null,'amount_toman'=>$order->total_toman,'status'=>'paid','payload'=>$request->query()]);
 
         return view('payment-result', [
