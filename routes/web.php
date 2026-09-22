@@ -29,6 +29,8 @@ Route::get('/compare', [TrustController::class, 'compare'])->name('compare');
 Route::get('/trust/{page}', [TrustController::class, 'page'])->name('trust.page');
 Route::get('/account/login', [AccountController::class,'login'])->name('account.login');
 Route::post('/account/login', [AccountController::class,'authenticate'])->name('account.login.submit');
+Route::get('/account/forgot-password', [AccountController::class,'forgot'])->name('account.forgot');
+Route::post('/account/forgot-password', [AccountController::class,'sendReset'])->name('account.forgot.submit');
 Route::get('/account/register', [AccountController::class,'register'])->name('account.register');
 Route::post('/account/register', [AccountController::class,'store'])->name('account.register.submit');
 Route::middleware('auth')->prefix('account')->name('account.')->group(function(){ Route::post('/logout',[AccountController::class,'logout'])->name('logout'); Route::get('/orders',[AccountController::class,'orders'])->name('orders'); Route::get('/profile',[AccountController::class,'profile'])->name('profile'); Route::put('/profile',[AccountController::class,'update'])->name('profile.update'); });

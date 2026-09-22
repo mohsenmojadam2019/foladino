@@ -8,11 +8,14 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use Illuminate\View\View;
 
 class AccountController extends Controller
 {
     public function login(): View { return view('account.login'); }
+    public function forgot(): View { return view('account.forgot'); }
+    public function sendReset(Request $request): RedirectResponse { $request->validate(['email'=>'required|email']); Password::sendResetLink($request->only('email')); return back()->with('success','اگر ایمیل ثبت شده باشد، لینک بازیابی ارسال می‌شود.'); }
     public function authenticate(Request $request): RedirectResponse
     {
         $credentials = $request->validate(['email'=>'required|email','password'=>'required|string']);
