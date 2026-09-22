@@ -66,6 +66,9 @@ Route::prefix('admin')->name('admin.')->group(function(){
             Route::get('/shipping-rates',[AdminController::class,'shippingRates'])->name('shipping-rates');
             Route::put('/orders/{order}',[AdminController::class,'orderUpdate'])->name('orders.update');
             Route::post('/shipping-rates',[AdminController::class,'shippingRateStore'])->name('shipping-rates.store');
+            Route::put('/shipping-rates/{shippingRate}',[AdminController::class,'shippingRateUpdate'])->name('shipping-rates.update');
+            Route::post('/shipping-rates/{shippingRate}/toggle',[AdminController::class,'shippingRateToggle'])->name('shipping-rates.toggle');
+            Route::delete('/shipping-rates/{shippingRate}',[AdminController::class,'shippingRateDestroy'])->name('shipping-rates.destroy');
             Route::get('/quotes',[AdminController::class,'quotes'])->name('quotes');
             Route::put('/quotes/{quote}',[AdminController::class,'quoteUpdate'])->name('quotes.update');
         });
