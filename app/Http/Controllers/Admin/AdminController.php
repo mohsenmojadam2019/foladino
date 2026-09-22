@@ -78,7 +78,7 @@ class AdminController extends Controller
 
     public function settings(){ return view('admin.settings',['settings'=>Setting::pluck('value','key')->all(),'users'=>User::orderBy('name')->get()]); }
     public function settingsUpdate(Request $r){
-        $keys=['site_name','phone','support_phone','email','address','hero_title','hero_subtitle','annual_tons','active_customers','factories_count','logo_image','hero_image','project_image','delivery_map_image','cta_image','factory_default_image'];
+        $keys=['site_name','phone','support_phone','email','address','hero_title','hero_subtitle','annual_tons','active_customers','factories_count','logo_image','hero_image','project_image','delivery_map_image','cta_image','factory_default_image','company_legal_name','company_registration_number','company_national_id','company_economic_code','company_tax_id','company_vat_percent'];
         foreach($r->only($keys) as $k=>$v) Setting::updateOrCreate(['key'=>$k],['value'=>$v,'group'=>'general']);
         return back()->with('success','تنظیمات ذخیره شد.');
     }
