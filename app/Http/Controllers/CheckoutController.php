@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Models\{Product, PurchaseOrder};
+use App\Models\{Product, PurchaseOrder, PaymentTransaction};
 use App\Services\PaymentGateway;
 use Illuminate\Http\{RedirectResponse, Request};
 use Illuminate\Support\Facades\DB;
@@ -58,6 +58,7 @@ class CheckoutController extends Controller
         $request->session()->forget('cart');
         try {
             $payment = $gateway->request($order);
+            PaymentTransaction::create(['purchase_order_id'=>$order->id,'gateway'=>$order->gateway,'authority'=>$payment['authority'],'amount_toman'=>$order->total_toman,'status'=>'started']);
             $order->update([
                 'status' => 'payment_started',
                 'authority' => $payment['authority'],
@@ -86,6 +87,7 @@ class CheckoutController extends Controller
 
         if ($status !== 'OK' || $authority === '') {
             $order->update(['status' => 'cancelled']);
+            PaymentTransaction::create(['purchase_order_id'=>$order->id,'gateway'=>$order->gateway,'authority'=>$authority ?: null,'amount_toman'=>$order->total_toman,'status'=>'cancelled','payload'=>$request->query()]);
             return view('payment-result', ['order' => $order, 'success' => false]);
         }
 
@@ -99,6 +101,7 @@ class CheckoutController extends Controller
 
         if (!$verified['ok']) {
             $order->update(['status' => 'failed']);
+            PaymentTransaction::create(['purchase_order_id'=>$order->id,'gateway'=>$order->gateway,'authority'=>$authority,'amount_toman'=>$order->total_toman,'status'=>'failed','payload'=>$request->query()]);
             return view('payment-result', ['order' => $order, 'success' => false]);
         }
         $order->update([
@@ -107,6 +110,7 @@ class CheckoutController extends Controller
             'reference_id' => $verified['ref_id'] ?? null,
             'paid_at' => now(),
         ]);
+        PaymentTransaction::updateOrCreate(['purchase_order_id'=>$order->id,'authority'=>$authority],['gateway'=>$order->gateway,'reference_id'=>$verified['ref_id'] ?? null,'amount_toman'=>$order->total_toman,'status'=>'paid','payload'=>$request->query()]);
 
         return view('payment-result', [
             'order' => $order->fresh('product'),
@@ -116,7 +120,7 @@ class CheckoutController extends Controller
 
     public function invoice(string $token): View
     {
-        $order = PurchaseOrder::with(['product.factory'])->where('public_token', $token)->firstOrFail();
+        $order = PurchaseOrder::with(['product.factory','items'])->where('public_token', $token)->firstOrFail();
         abort_unless($order->status === 'paid', 403, 'فاکتور فقط برای سفارش پرداخت‌شده قابل مشاهده است.');
         return view('invoice', compact('order'));
     }
