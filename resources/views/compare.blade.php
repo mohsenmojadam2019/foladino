@@ -1,0 +1,4 @@
+@extends('layouts.app')
+@section('content')
+<main class="container page-shell"><div class="page-heading"><h1>مقایسه محصولات و کارخانه‌ها</h1><p>قیمت، کارخانه، سایز و مشخصات محصولات را کنار هم ببینید.</p></div><div class="compare-table"><table><thead><tr><th>مشخصه</th>@foreach($products as $product)<th>{{ $product->name }}</th>@endforeach</tr></thead><tbody><tr><th>کارخانه</th>@foreach($products as $product)<td>{{ $product->factory?->name ?? '—' }}</td>@endforeach</tr><tr><th>قیمت</th>@foreach($products as $product)<td>{{ money_fa($product->price) }} تومان</td>@endforeach</tr><tr><th>سایز</th>@foreach($products as $product)<td>{{ $product->size ?: '—' }}</td>@endforeach</tr><tr><th>وضعیت</th>@foreach($products as $product)<td>{{ $product->stock_status === 'available' ? 'موجود' : 'تماس بگیرید' }}</td>@endforeach</tr></tbody></table></div></main>
+@endsection

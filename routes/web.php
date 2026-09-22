@@ -2,6 +2,7 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\TrustController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\AdminController;
@@ -23,6 +24,8 @@ Route::get('/checkout', function (\Illuminate\Http\Request $request) {
     $products = \App\Models\Product::with('factory')->whereIn('id', array_keys($cart))->get()->keyBy('id');
     return view('checkout', compact('cart', 'products'));
 })->name('checkout');
+Route::get('/compare', [TrustController::class, 'compare'])->name('compare');
+Route::get('/trust/{page}', [TrustController::class, 'page'])->name('trust.page');
 Route::post('/checkout', [CheckoutController::class,'start'])->name('checkout.start')->middleware('throttle:10,1');
 Route::get('/payment/callback/{token}', [CheckoutController::class,'callback'])->name('payment.callback');
 Route::get('/orders/{token}/invoice', [CheckoutController::class,'invoice'])->name('orders.invoice');
