@@ -18,10 +18,10 @@ class DatabaseSeeder extends Seeder
         $cats = [
             ['میلگرد','rebar','/images/generated/rebar-bundle.png'],
             ['تیرآهن','beam','/images/generated/steel-sections.png'],
-            ['ورق','sheet','/images/generated/steel-sections.png'],
-            ['لوله','pipe','/images/generated/steel-sections.png'],
-            ['پروفیل','profile','/images/generated/steel-sections.png'],
-            ['نبشی و ناودانی','angle','/images/categories/angle.jpg'],
+            ['ورق','sheet','/images/generated/sheet-plates.png'],
+            ['لوله','pipe','/images/generated/industrial-pipes.png'],
+            ['پروفیل','profile','/images/generated/steel-profiles.png'],
+            ['نبشی و ناودانی','angle','/images/generated/angles-channels.png'],
         ];
         foreach ($cats as $i=>$c) Category::updateOrCreate(
             ['slug'=>$c[1]],
@@ -138,9 +138,9 @@ class DatabaseSeeder extends Seeder
         Product::whereIn('slug',['hot-sheet-2','pipe-2-inch','profile-40'])->delete();
 
         $articles = [
-            ['تحلیل روند قیمت آهن‌آلات در شهریور ۱۴۰۵','steel-price-trend','بررسی محرک‌های بازار و رفتار قیمت میلگرد، تیرآهن و ورق در آخرین روزهای شهریور.','/images/article-market.svg','1405/06/29 09:10'],
-            ['۵ نکته مهم در خرید آهن برای پروژه‌های ساختمانی','buying-guide','از کنترل استاندارد و وزن تا انتخاب کارخانه و برنامه‌ریزی حمل در خرید عمده.','/images/article-project.svg','1405/06/27 12:30'],
-            ['راهنمای انتخاب کارخانه مناسب برای تأمین پروژه','factory-guide','چطور بین قیمت، فاصله حمل، ظرفیت تولید و اعتبار تأمین‌کننده تصمیم بگیریم.','/images/article-factory.svg','1405/06/25 08:20'],
+            ['تحلیل روند قیمت آهن‌آلات در شهریور ۱۴۰۵','steel-price-trend','بررسی محرک‌های بازار و رفتار قیمت میلگرد، تیرآهن و ورق در آخرین روزهای شهریور.','/images/generated/market-article.png','1405/06/29 09:10'],
+            ['۵ نکته مهم در خرید آهن برای پروژه‌های ساختمانی','buying-guide','از کنترل استاندارد و وزن تا انتخاب کارخانه و برنامه‌ریزی حمل در خرید عمده.','/images/generated/construction-site.png','1405/06/27 12:30'],
+            ['راهنمای انتخاب کارخانه مناسب برای تأمین پروژه','factory-guide','چطور بین قیمت، فاصله حمل، ظرفیت تولید و اعتبار تأمین‌کننده تصمیم بگیریم.','/images/generated/delivery-article.png','1405/06/25 08:20'],
         ];
         foreach ($articles as $a) Article::updateOrCreate(['slug'=>$a[1]], ['title'=>$a[0],'excerpt'=>$a[2],'body'=>$a[2],'image'=>$a[3],'published_at'=>$this->j($a[4]),'is_published'=>true]);
 
