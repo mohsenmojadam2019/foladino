@@ -1,6 +1,7 @@
 <?php
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\QuoteController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\AdminController;
@@ -13,6 +14,10 @@ Route::get('/bulk-order/{product:slug?}', [HomeController::class,'bulkOrder'])->
 Route::get('/about', [HomeController::class,'about'])->name('about');
 Route::get('/contact', [HomeController::class,'contact'])->name('contact');
 Route::post('/quote', [QuoteController::class,'store'])->name('quote.store')->middleware('throttle:10,1');
+Route::get('/cart', [CartController::class,'index'])->name('cart');
+Route::post('/cart/{product}', [CartController::class,'add'])->name('cart.add');
+Route::delete('/cart/{product}', [CartController::class,'remove'])->name('cart.remove');
+Route::get('/checkout', fn () => redirect()->route('cart'))->name('checkout');
 Route::post('/checkout', [CheckoutController::class,'start'])->name('checkout.start')->middleware('throttle:10,1');
 Route::get('/payment/callback/{token}', [CheckoutController::class,'callback'])->name('payment.callback');
 Route::get('/orders/{token}/invoice', [CheckoutController::class,'invoice'])->name('orders.invoice');
