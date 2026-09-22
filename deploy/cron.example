@@ -1,0 +1,2 @@
+* * * * * cd /var/www/foladino && php artisan schedule:run >> /dev/null 2>&1
+*/5 * * * * cd /var/www/foladino && php artisan queue:work --stop-when-empty --tries=3 >> storage/logs/queue.log 2>&1
