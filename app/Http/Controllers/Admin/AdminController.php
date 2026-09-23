@@ -64,6 +64,8 @@ class AdminController extends Controller
     public function companies(){ return view('admin.companies',['companies'=>Company::withCount('projects')->latest()->get()]); }
     public function refunds(){ return view('admin.refunds',['refunds'=>Refund::with('order')->latest()->get()]); }
     public function logistics(){ return view('admin.logistics',['shipments'=>Shipment::with(['order','vehicle'])->latest()->get(),'vehicles'=>Vehicle::latest()->get()]); }
+    public function vehicleStore(Request $r){$d=$r->validate(['plate'=>'required|max:30|unique:vehicles,plate','driver_name'=>'required|max:120','driver_mobile'=>'nullable|max:30','capacity_kg'=>'required|integer|min:0']);Vehicle::create($d+['is_active'=>true]);return back()->with('success','خودرو ثبت شد.');}
+    public function vehicleToggle(Vehicle $vehicle){$vehicle->update(['is_active'=>!$vehicle->is_active]);return back()->with('success','وضعیت خودرو تغییر کرد.');}
     public function refundUpdate(Request $r, Refund $refund){$d=$r->validate(['status'=>'required|in:requested,approved,processed,rejected']);$refund->update($d+($d['status']==='processed'?['processed_by'=>auth()->id(),'processed_at'=>now()]:[]));$this->audit('تغییر وضعیت استرداد','Refund',$refund->id,$d);return back()->with('success','وضعیت استرداد به‌روزرسانی شد.');}
     public function transactions(){ return view('admin.transactions',['transactions'=>Schema::hasTable('payment_transactions') ? PaymentTransaction::with('order')->latest()->get() : collect()]); }
     public function customers(){ return view('admin.customers',['customers'=>User::where('role','customer')->latest()->get()]); }
