@@ -87,6 +87,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  const globalSearch = document.querySelector('.admin-search input');
+  if (globalSearch) {
+    globalSearch.addEventListener('input', () => {
+      const q = globalSearch.value.trim().toLocaleLowerCase('fa');
+      const rows = document.querySelectorAll('.admin-table tbody tr, .admin-list > div, .content-list-v2 article, .notification-item');
+      rows.forEach(row => row.style.display = !q || row.innerText.toLocaleLowerCase('fa').includes(q) ? '' : 'none');
+    });
+    globalSearch.addEventListener('keydown', e => { if (e.key === 'Escape') { globalSearch.value=''; globalSearch.dispatchEvent(new Event('input')); } });
+  }
+
   setTimeout(() => document.querySelectorAll('.flash').forEach(f => {
     f.style.opacity = '0';
     f.style.transition = '.3s';
