@@ -1,0 +1,4 @@
+<?php
+use Illuminate\Database\Migrations\Migration; use Illuminate\Database\Schema\Blueprint; use Illuminate\Support\Facades\Schema;
+return new class extends Migration { public function up(): void { Schema::create('companies',function(Blueprint $t){$t->id();$t->string('name');$t->string('national_id',20)->nullable()->index();$t->string('economic_code',30)->nullable();$t->string('phone',30)->nullable();$t->string('credit_limit')->nullable();$t->boolean('is_active')->default(true);$t->timestamps();}); Schema::create('projects',function(Blueprint $t){$t->id();$t->foreignId('company_id')->constrained()->cascadeOnDelete();$t->string('name');$t->string('city')->nullable();$t->string('status',30)->default('active');$t->decimal('budget',15,2)->nullable();$t->timestamps();}); }
+ public function down(): void { Schema::dropIfExists('projects'); Schema::dropIfExists('companies'); }};

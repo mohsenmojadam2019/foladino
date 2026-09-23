@@ -1,0 +1,5 @@
+@extends('admin.layout')
+@section('title','شرکت‌ها و پروژه‌ها')
+@section('heading','شرکت‌ها و پروژه‌ها')
+@section('subheading','حساب‌های سازمانی، اعتبار و پروژه‌های فعال')
+@section('content')<section class="admin-card"><div class="admin-card-head"><div><h3>حساب‌های سازمانی</h3><p>مدیریت مشتریان حقوقی و پروژه‌های آن‌ها</p></div><button class="btn btn-primary">+ شرکت جدید</button></div><div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>شرکت</th><th>شناسه ملی</th><th>پروژه‌ها</th><th>سقف اعتبار</th><th>وضعیت</th></tr></thead><tbody>@forelse($companies as $c)<tr><td><b>{{ $c->name }}</b><small>{{ $c->phone ?: '—' }}</small></td><td>{{ $c->national_id ?: '—' }}</td><td>{{ fa_digits($c->projects_count) }} پروژه</td><td>{{ $c->credit_limit ? money_fa($c->credit_limit).' تومان':'تعریف نشده' }}</td><td><span class="status-badge {{ $c->is_active?'won':'lost' }}">{{ $c->is_active?'فعال':'غیرفعال' }}</span></td></tr>@empty<tr><td colspan="5" class="admin-empty">شرکتی ثبت نشده است.</td></tr>@endforelse</tbody></table></div></section>@endsection
