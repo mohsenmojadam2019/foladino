@@ -6,15 +6,15 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title','فولادینو') | فروش عمده محصولات فولادی</title>
     <meta name="description" content="@yield('description','فروش مستقیم و عمده محصولات فولادی فولادینو با قیمت روز، سفارش آنلاین و ارسال سراسر کشور')">
-    <link rel="icon" href="{{ $siteSettings['logo_image'] ?? '/images/logo-mark.svg' }}">
-    <link rel="stylesheet" href="/css/site.css?v=14050701">
+    <link rel="icon" href="{{ site_asset($siteSettings['logo_image'] ?? '/images/logo-mark.svg') }}">
+    <link rel="stylesheet" href="{{ asset('css/site.css?v=14050701') }}">
     @stack('styles')
 </head>
 <body class="@yield('body_class')">
 <header class="site-header">
     <div class="shell header-row">
         <a class="brand" href="{{ route('home') }}" aria-label="فولادینو">
-            <span class="brand-mark"><img src="{{ $siteSettings['logo_image'] ?? '/images/logo-mark.svg' }}" alt=""></span>
+            <span class="brand-mark"><img src="{{ site_asset($siteSettings['logo_image'] ?? '/images/logo-mark.svg') }}" alt=""></span>
             <span class="brand-copy"><strong>فولادینو</strong><small>قدرت در اعتماد</small></span>
         </a>
 
@@ -47,7 +47,7 @@
     <div class="shell footer-grid">
         <div class="footer-brand">
             <a class="brand" href="{{ route('home') }}">
-                <span class="brand-mark"><img src="{{ $siteSettings['logo_image'] ?? '/images/logo-mark.svg' }}" alt=""></span>
+                <span class="brand-mark"><img src="{{ site_asset($siteSettings['logo_image'] ?? '/images/logo-mark.svg') }}" alt=""></span>
                 <span class="brand-copy"><strong>فولادینو</strong><small>قدرت در اعتماد</small></span>
             </a>
             <p>تولیدکننده و تأمین‌کننده مطمئن انواع مقاطع فولادی برای پروژه‌های بزرگ در سراسر ایران.</p>
@@ -87,7 +87,7 @@
     </div>
 </footer>
 
-<script src="/js/site.js?v=14050701"></script>
+<script src="{{ asset('js/site.js?v=14050701') }}"></script>
 @stack('scripts')
 </body>
 </html>

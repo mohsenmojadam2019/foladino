@@ -5,15 +5,15 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>@yield('title','پنل مدیریت') | فولادینو</title>
-  <link rel="icon" href="{{ $siteSettings['logo_image'] ?? '/images/logo-mark.svg' }}">
-  <link rel="stylesheet" href="/css/app.css?v=14050702">
+  <link rel="icon" href="{{ site_asset($siteSettings['logo_image'] ?? '/images/logo-mark.svg') }}">
+  <link rel="stylesheet" href="{{ asset('css/app.css?v=14050702') }}">
 </head>
 <body class="admin-body">
 @php($role = auth()->user()->role)
 <div class="admin-shell admin-v2">
   <aside class="admin-sidebar" id="adminSidebar">
     <a class="admin-brand" href="{{ route('admin.dashboard') }}">
-      <span class="admin-brand-mark"><img src="{{ $siteSettings['logo_image'] ?? '/images/logo-mark.svg' }}" alt=""></span>
+      <span class="admin-brand-mark"><img src="{{ site_asset($siteSettings['logo_image'] ?? '/images/logo-mark.svg') }}" alt=""></span>
       <span><strong>فولادینو</strong><small>پنل مدیریت</small></span>
     </a>
 
@@ -73,6 +73,6 @@
     <div class="admin-content">@yield('content')</div>
   </section>
 </div>
-<script src="/js/app.js?v=14050702"></script>
+<script src="{{ asset('js/app.js?v=14050702') }}"></script>
 </body>
 </html>

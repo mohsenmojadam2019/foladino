@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>ورود سازمانی | فولادینو</title>
-  <link rel="icon" href="{{ $siteSettings['logo_image'] ?? '/images/logo-mark.svg' }}">
-  <link rel="stylesheet" href="/css/app.css?v=14050701">
+  <link rel="icon" href="{{ site_asset($siteSettings['logo_image'] ?? '/images/logo-mark.svg') }}">
+  <link rel="stylesheet" href="{{ asset('css/app.css?v=14050701') }}">
 </head>
 <body class="login-body">
 <main class="login-shell">
   <section class="login-art">
-    <img src="/images/hero/admin-login.jpg" alt="کارخانه فولادینو">
+    <img src="{{ asset('images/hero/admin-login.jpg') }}" alt="کارخانه فولادینو">
     <div>
       <span>پنل سازمانی فولادینو</span>
       <h1>مدیریت فروش، قیمت و سفارش‌ها<br>در یک فضای متمرکز</h1>
@@ -19,7 +19,7 @@
   </section>
   <section class="login-panel">
     <a class="brand" href="/">
-      <img src="{{ $siteSettings['logo_image'] ?? '/images/logo-mark.svg' }}" alt="">
+      <img src="{{ site_asset($siteSettings['logo_image'] ?? '/images/logo-mark.svg') }}" alt="">
       <span><strong>فولادینو</strong><small>قدرت در اعتماد</small></span>
     </a>
     <div class="login-form-wrap">

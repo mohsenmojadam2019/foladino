@@ -30,3 +30,12 @@ if (! function_exists('jalali_to_carbon')) {
 if (! function_exists('money_fa')) {
     function money_fa($amount): string { return fa_digits(number_format((float) $amount)); }
 }
+
+if (! function_exists('site_asset')) {
+    function site_asset(?string $path): string
+    {
+        if (! $path) return asset('images/logo-mark.svg');
+        if (preg_match('#^(https?:)?//#', $path)) return $path;
+        return asset(ltrim($path, '/'));
+    }
+}

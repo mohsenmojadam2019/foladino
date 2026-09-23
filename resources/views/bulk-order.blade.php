@@ -24,8 +24,8 @@
         <div class="thumbs">
           <img src="{{ $mainImage }}" alt="{{ $product->name }}">
           <img src="{{ $product->category?->icon }}" alt="{{ $product->category?->name }}">
-          <img src="/images/hero/order-hero.jpg" alt="انبار و بارگیری فولاد">
-          <img src="/images/hero/about-plant.jpg" alt="کارخانه فولادینو">
+          <img src="{{ asset('images/hero/order-hero.jpg') }}" alt="انبار و بارگیری فولاد">
+          <img src="{{ asset('images/hero/about-plant.jpg') }}" alt="کارخانه فولادینو">
         </div>
       </section>
 
