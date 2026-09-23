@@ -46,6 +46,7 @@
       @endif
       @if($role==='super_admin')
       <a class="{{ request()->routeIs('admin.permissions*')?'active':'' }}" href="{{ route('admin.permissions') }}"><i>◈</i><span>نقش‌ها و دسترسی‌ها</span></a>
+      <a class="{{ request()->routeIs('admin.audit-logs*')?'active':'' }}" href="{{ route('admin.audit-logs') }}"><i>⌁</i><span>لاگ فعالیت‌ها</span></a>
       <a class="{{ request()->routeIs('admin.settings*')?'active':'' }}" href="{{ route('admin.settings') }}"><i>⚙</i><span>کاربران و تنظیمات</span></a>
       @endif
       <a href="/" target="_blank"><i>↗</i><span>مشاهده سایت</span></a>

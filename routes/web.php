@@ -87,6 +87,7 @@ Route::prefix('admin')->name('admin.')->group(function(){
 
         Route::middleware('role:super_admin')->group(function(){
             Route::get('/permissions',[AdminController::class,'permissions'])->name('permissions');
+            Route::get('/audit-logs',[AdminController::class,'auditLogs'])->name('audit-logs');
             Route::get('/settings',[AdminController::class,'settings'])->name('settings');
             Route::put('/settings',[AdminController::class,'settingsUpdate'])->name('settings.update');
             Route::post('/users',[AdminController::class,'userStore'])->name('users.store');
