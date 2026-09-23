@@ -149,6 +149,17 @@
 .settings-tabs{display:inline-flex;background:#fff;border:1px solid #e0e7ec;border-radius:8px;padding:3px;margin-bottom:10px}.settings-tabs .tab-btn{padding:7px 12px}.settings-section-head{border-bottom:1px solid #edf1f4;padding-bottom:10px;margin-bottom:12px}.settings-section-head h3{font-size:13px;margin:0}.settings-section-head p{font-size:7.5px;color:#8795a1;margin:3px 0 0}.settings-form{display:flex;flex-direction:column;gap:12px}.settings-grid-form{display:grid;grid-template-columns:1fr 1fr;gap:10px}.settings-grid-form label{display:flex;flex-direction:column;gap:4px;font-size:8px;color:#596e80}.settings-grid-form label.wide{grid-column:1/-1}.settings-grid-form input,.settings-grid-form textarea{border:1px solid #dce4ea;border-radius:6px;padding:8px;background:#fff;font-size:8px;outline:none}.settings-grid-form input:focus,.settings-grid-form textarea:focus{border-color:#ff9a59;box-shadow:0 0 0 3px rgba(255,115,24,.07)}.settings-form>.btn{align-self:flex-start}
 .settings-team-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}.user-list-v2>div{grid-template-columns:36px 1fr auto!important}.user-list-v2 .avatar{width:34px;height:34px;border-radius:50%}.team-create-form{padding:12px;border:1px solid #e2e8ed;border-radius:8px;background:#fafbfc}
 
+/* Operational pages: readable density and stronger hierarchy */
+.admin-v2 .admin-page-kpis{gap:16px;margin-bottom:18px}
+.admin-v2 .admin-page-kpis article{min-height:104px;padding:18px;border-radius:14px;box-shadow:0 8px 24px rgba(8,31,51,.06)}
+.admin-v2 .admin-page-kpis article>span{width:48px;height:48px;border-radius:13px;font-size:21px}
+.admin-v2 .admin-page-kpis small{font-size:11px}.admin-v2 .admin-page-kpis b{font-size:25px;margin-top:3px}
+.admin-v2 .admin-card{padding:22px;border-radius:14px}.admin-v2 .admin-card-head{margin-bottom:16px}.admin-v2 .admin-card-head h3{font-size:18px}.admin-v2 .admin-card-head p{font-size:11px}
+.admin-v2 .admin-table-search{height:40px;min-width:290px}.admin-v2 .admin-table-search input,.admin-v2 .admin-table-tools select{font-size:12px}.admin-v2 .admin-table-tools select{height:40px}
+.admin-v2 .admin-table th,.admin-v2 .admin-table td{font-size:12px!important;padding:14px 12px!important}.admin-v2 .admin-table th{font-weight:800}.admin-v2 .admin-customer-cell b{font-size:12px}.admin-v2 .admin-customer-cell small,.admin-v2 .admin-orders-full td>small{font-size:10px}.admin-v2 .mini-avatar{width:34px;height:34px;font-size:11px}
+.admin-v2 .table-product img{width:46px;height:36px}.admin-v2 .table-product b{font-size:12px}.admin-v2 .table-product small{font-size:10px}.admin-v2 .inline-status select{border:1px solid #d7e2ea;border-radius:8px;padding:8px 10px;background:#fff;font-size:11px;color:#27445c}
+.admin-v2 .admin-order-summary{gap:16px;margin-top:16px}.admin-v2 .order-status-bars{gap:16px}.admin-v2 .order-status-bars>div span{font-size:12px}.admin-v2 .order-status-bars i{height:9px}.admin-v2 .admin-big-number{min-height:140px}.admin-v2 .admin-big-number b{font-size:30px}.admin-v2 .admin-big-number span{font-size:11px}
+
 @media(max-width:1180px){
   .admin-page-kpis{grid-template-columns:1fr 1fr}.admin-pricing-grid,.admin-content-grid,.admin-order-summary,.settings-team-grid{grid-template-columns:1fr}
   .crm-board-v2{grid-template-columns:repeat(3,1fr)!important}.category-admin-grid{grid-template-columns:1fr 1fr}
