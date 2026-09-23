@@ -2,7 +2,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\{Article,Category,Factory,PriceHistory,Product,PurchaseOrder,QuoteRequest,Setting,User,ShippingRate,PaymentTransaction,AdminAuditLog,AdminNotification,Company,Project,Refund};
+use App\Models\{Article,Category,Factory,PriceHistory,Product,PurchaseOrder,QuoteRequest,Setting,User,ShippingRate,PaymentTransaction,AdminAuditLog,AdminNotification,Company,Project,Refund,Vehicle,Shipment};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
@@ -63,6 +63,7 @@ class AdminController extends Controller
     public function orderShow(PurchaseOrder $order){ return view('admin.order-show',['order'=>$order->load(['product','items','transactions'])]); }
     public function companies(){ return view('admin.companies',['companies'=>Company::withCount('projects')->latest()->get()]); }
     public function refunds(){ return view('admin.refunds',['refunds'=>Refund::with('order')->latest()->get()]); }
+    public function logistics(){ return view('admin.logistics',['shipments'=>Shipment::with(['order','vehicle'])->latest()->get(),'vehicles'=>Vehicle::latest()->get()]); }
     public function refundUpdate(Request $r, Refund $refund){$d=$r->validate(['status'=>'required|in:requested,approved,processed,rejected']);$refund->update($d+($d['status']==='processed'?['processed_by'=>auth()->id(),'processed_at'=>now()]:[]));$this->audit('تغییر وضعیت استرداد','Refund',$refund->id,$d);return back()->with('success','وضعیت استرداد به‌روزرسانی شد.');}
     public function transactions(){ return view('admin.transactions',['transactions'=>Schema::hasTable('payment_transactions') ? PaymentTransaction::with('order')->latest()->get() : collect()]); }
     public function customers(){ return view('admin.customers',['customers'=>User::where('role','customer')->latest()->get()]); }
