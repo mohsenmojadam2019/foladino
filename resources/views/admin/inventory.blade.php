@@ -1,0 +1,9 @@
+@extends('admin.layout')
+@section('title','انبار و موجودی')
+@section('heading','انبار و موجودی')
+@section('subheading','موجودی قابل فروش، رزرو شده و وضعیت تأمین محصولات')
+@section('content')
+@php($total=$products->sum('stock_kg'))
+<div class="admin-page-kpis"><article><span>▤</span><div><small>کالاهای فعال</small><b>{{ fa_digits($products->count()) }}</b></div></article><article><span>✓</span><div><small>موجودی کل</small><b>{{ money_fa($total) }} <small>کیلو</small></b></div></article><article><span>!</span><div><small>موجودی کم</small><b>{{ fa_digits($products->where('stock_kg','<',1000)->count()) }}</b></div></article><article><span>⌁</span><div><small>نیازمند تأمین</small><b>{{ fa_digits($products->where('stock_status','call')->count()) }}</b></div></article></div>
+<section class="admin-card"><div class="admin-card-head"><div><h3>موجودی محصولات</h3><p>کنترل موجودی و وضعیت قابل فروش</p></div><div class="admin-table-search"><span>⌕</span><input placeholder="جستجوی محصول یا کارخانه..."></div></div><div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>محصول</th><th>کارخانه</th><th>موجودی</th><th>حداقل سفارش</th><th>شهر بارگیری</th><th>وضعیت</th></tr></thead><tbody>@forelse($products as $p)<tr><td><div class="table-product"><img src="{{ site_asset($p->image) }}" alt=""><span><b>{{ $p->name }}</b><small>{{ $p->sku }}</small></span></div></td><td>{{ $p->factory?->name ?: '—' }}</td><td><strong>{{ money_fa($p->stock_kg) }}</strong> کیلو</td><td>{{ fa_digits($p->min_order_tons) }} تن</td><td>{{ $p->loading_city ?: '—' }}</td><td><span class="status-badge {{ $p->stock_status==='available'?'won':($p->stock_status==='call'?'contacted':'lost') }}">{{ ['available'=>'موجود','call'=>'استعلام موجودی','unavailable'=>'ناموجود'][$p->stock_status] ?? $p->stock_status }}</span></td></tr>@empty<tr><td colspan="6" class="admin-empty">محصولی ثبت نشده است.</td></tr>@endforelse</tbody></table></div></section>
+@endsection

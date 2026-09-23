@@ -35,12 +35,14 @@
       <a class="{{ request()->routeIs('admin.orders*')?'active':'' }}" href="{{ route('admin.orders') }}"><i>🛒</i><span>سفارش‌ها</span></a>
       <a class="{{ request()->routeIs('admin.transactions*')?'active':'' }}" href="{{ route('admin.transactions') }}"><i>◉</i><span>تراکنش‌ها</span></a>
       <a class="{{ request()->routeIs('admin.customers*')?'active':'' }}" href="{{ route('admin.customers') }}"><i>♙</i><span>مشتریان</span></a>
+      <a class="{{ request()->routeIs('admin.inventory*')?'active':'' }}" href="{{ route('admin.inventory') }}"><i>▤</i><span>انبار و موجودی</span></a>
       <a class="{{ request()->routeIs('admin.quotes*')?'active':'' }}" href="{{ route('admin.quotes') }}"><i>☏</i><span>استعلام‌ها و CRM</span></a>
       @endif
       @if(in_array($role,['super_admin','admin','content']))
       <a class="{{ request()->routeIs('admin.content*')?'active':'' }}" href="{{ route('admin.content') }}"><i>✎</i><span>محتوا و مقالات</span></a>
       @endif
       @if($role==='super_admin')
+      <a class="{{ request()->routeIs('admin.permissions*')?'active':'' }}" href="{{ route('admin.permissions') }}"><i>◈</i><span>نقش‌ها و دسترسی‌ها</span></a>
       <a class="{{ request()->routeIs('admin.settings*')?'active':'' }}" href="{{ route('admin.settings') }}"><i>⚙</i><span>کاربران و تنظیمات</span></a>
       @endif
       <a href="/" target="_blank"><i>↗</i><span>مشاهده سایت</span></a>

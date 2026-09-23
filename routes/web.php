@@ -65,6 +65,7 @@ Route::prefix('admin')->name('admin.')->group(function(){
             Route::get('/orders',[AdminController::class,'orders'])->name('orders');
             Route::get('/transactions',[AdminController::class,'transactions'])->name('transactions');
             Route::get('/customers',[AdminController::class,'customers'])->name('customers');
+            Route::get('/inventory',[AdminController::class,'inventory'])->name('inventory');
             Route::get('/shipping-rates',[AdminController::class,'shippingRates'])->name('shipping-rates');
             Route::put('/orders/{order}',[AdminController::class,'orderUpdate'])->name('orders.update');
             Route::post('/shipping-rates',[AdminController::class,'shippingRateStore'])->name('shipping-rates.store');
@@ -82,6 +83,7 @@ Route::prefix('admin')->name('admin.')->group(function(){
         });
 
         Route::middleware('role:super_admin')->group(function(){
+            Route::get('/permissions',[AdminController::class,'permissions'])->name('permissions');
             Route::get('/settings',[AdminController::class,'settings'])->name('settings');
             Route::put('/settings',[AdminController::class,'settingsUpdate'])->name('settings.update');
             Route::post('/users',[AdminController::class,'userStore'])->name('users.store');

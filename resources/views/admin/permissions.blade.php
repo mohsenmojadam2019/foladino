@@ -1,0 +1,7 @@
+@extends('admin.layout')
+@section('title','نقش‌ها و دسترسی‌ها')
+@section('heading','نقش‌ها و دسترسی‌ها')
+@section('subheading','کنترل دسترسی کاربران پنل بر اساس نقش سازمانی')
+@section('content')
+<section class="admin-card"><div class="admin-card-head"><div><h3>کاربران سازمانی</h3><p>سطح دسترسی هر کاربر را بررسی و مدیریت کنید.</p></div></div><div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>کاربر</th><th>نقش</th><th>فروش</th><th>مالی</th><th>انبار</th><th>محتوا</th><th>تنظیمات</th></tr></thead><tbody>@foreach($users as $u)<tr><td><div class="admin-customer-cell"><span class="mini-avatar">{{ mb_substr($u->name,0,1) }}</span><div><b>{{ $u->name }}</b><small>{{ $u->email }}</small></div></div></td><td>{{ ['super_admin'=>'مدیر سیستم','admin'=>'مدیر عملیات','pricing'=>'قیمت‌گذاری','content'=>'محتوا'][$u->role] ?? $u->role }}</td>@foreach(['sales','finance','inventory','content','settings'] as $permission)<td><span class="permission-chip {{ $u->role==='super_admin'||($u->role==='admin'&&$permission!=='settings')||($u->role==='pricing'&&$permission==='finance')||($u->role==='content'&&$permission==='content')?'on':'' }}">{{ $u->role==='super_admin'||($u->role==='admin'&&$permission!=='settings')||($u->role==='pricing'&&$permission==='finance')||($u->role==='content'&&$permission==='content')?'دارد':'—' }}</span></td>@endforeach</tr>@endforeach</tbody></table></div></section>
+@endsection

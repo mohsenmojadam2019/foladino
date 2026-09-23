@@ -159,6 +159,7 @@
 .admin-v2 .admin-table th,.admin-v2 .admin-table td{font-size:12px!important;padding:14px 12px!important}.admin-v2 .admin-table th{font-weight:800}.admin-v2 .admin-customer-cell b{font-size:12px}.admin-v2 .admin-customer-cell small,.admin-v2 .admin-orders-full td>small{font-size:10px}.admin-v2 .mini-avatar{width:34px;height:34px;font-size:11px}
 .admin-v2 .table-product img{width:46px;height:36px}.admin-v2 .table-product b{font-size:12px}.admin-v2 .table-product small{font-size:10px}.admin-v2 .inline-status select{border:1px solid #d7e2ea;border-radius:8px;padding:8px 10px;background:#fff;font-size:11px;color:#27445c}
 .admin-v2 .admin-order-summary{gap:16px;margin-top:16px}.admin-v2 .order-status-bars{gap:16px}.admin-v2 .order-status-bars>div span{font-size:12px}.admin-v2 .order-status-bars i{height:9px}.admin-v2 .admin-big-number{min-height:140px}.admin-v2 .admin-big-number b{font-size:30px}.admin-v2 .admin-big-number span{font-size:11px}
+.permission-chip{display:inline-flex;min-width:38px;justify-content:center;padding:5px 8px;border-radius:999px;background:#f1f4f6;color:#8795a1;font-size:10px}.permission-chip.on{background:#e8f8f0;color:#07814f;font-weight:800}
 
 @media(max-width:1180px){
   .admin-page-kpis{grid-template-columns:1fr 1fr}.admin-pricing-grid,.admin-content-grid,.admin-order-summary,.settings-team-grid{grid-template-columns:1fr}
