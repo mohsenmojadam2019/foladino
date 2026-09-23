@@ -10,6 +10,8 @@ use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
+    private function audit(string $action, ?string $type = null, ?int $id = null, array $meta = []): void
+    { AdminAuditLog::create(['user_id'=>auth()->id(),'action'=>$action,'entity_type'=>$type,'entity_id'=>$id,'metadata'=>$meta,'ip_address'=>request()->ip()]); }
     public function dashboard(){
         $hasOrders = Schema::hasTable('purchase_orders');
         $paidOrders = $hasOrders ? PurchaseOrder::where('status','paid') : null;
@@ -38,13 +40,13 @@ class AdminController extends Controller
     public function productStore(Request $r){
         $d=$r->validate(['name'=>'required|max:180','sku'=>'required|max:80|unique:products,sku','category_id'=>'required|exists:categories,id','factory_id'=>'nullable|exists:factories,id','size'=>'nullable|max:80','standard'=>'nullable|max:80','price'=>'required|integer|min:0','price_change'=>'nullable|numeric','stock_status'=>'required|in:available,call,unavailable','image'=>'nullable|max:255']);
         $d['slug']=Str::slug($r->input('slug') ?: $d['sku']); $d['unit']='کیلوگرم'; $d['is_featured']=$r->boolean('is_featured'); $d['is_active']=$r->boolean('is_active',true);
-        Product::create($d); return back()->with('success','محصول ایجاد شد.');
+        $product=Product::create($d); $this->audit('ایجاد محصول','Product',$product->id,['name'=>$product->name]); return back()->with('success','محصول ایجاد شد.');
     }
     public function productUpdate(Request $r, Product $product){
         $d=$r->validate(['name'=>'required|max:180','category_id'=>'required|exists:categories,id','factory_id'=>'nullable|exists:factories,id','size'=>'nullable|max:80','standard'=>'nullable|max:80','price'=>'required|integer|min:0','price_change'=>'nullable|numeric','stock_status'=>'required|in:available,call,unavailable']);
-        $d['is_featured']=$r->boolean('is_featured'); $d['is_active']=$r->boolean('is_active'); $product->update($d); return back()->with('success','محصول به‌روزرسانی شد.');
+        $d['is_featured']=$r->boolean('is_featured'); $d['is_active']=$r->boolean('is_active'); $product->update($d); $this->audit('ویرایش محصول','Product',$product->id); return back()->with('success','محصول به‌روزرسانی شد.');
     }
-    public function productDestroy(Product $product){ $product->delete(); return back()->with('success','محصول حذف شد.'); }
+    public function productDestroy(Product $product){ $id=$product->id; $product->delete(); $this->audit('حذف محصول','Product',$id); return back()->with('success','محصول حذف شد.'); }
 
     public function categoryStore(Request $r){ $d=$r->validate(['name'=>'required|max:120','slug'=>'required|max:120|unique:categories,slug','sort_order'=>'nullable|integer']); Category::create($d+['is_active'=>true]); return back()->with('success','دسته‌بندی ایجاد شد.'); }
     public function factoryStore(Request $r){ $d=$r->validate(['name'=>'required|max:160','slug'=>'required|max:160|unique:factories,slug','province'=>'nullable|max:80','city'=>'nullable|max:80']); Factory::create($d+['logo'=>'/images/factory.svg','is_active'=>true]); return back()->with('success','کارخانه ایجاد شد.'); }
@@ -52,7 +54,7 @@ class AdminController extends Controller
     public function pricing(){ return view('admin.pricing',['products'=>Product::with(['factory','category'])->orderBy('name')->get()]); }
     public function priceUpdate(Request $r, Product $product){
         $d=$r->validate(['price'=>'required|integer|min:0','price_change'=>'required|numeric']);
-        $product->update($d); PriceHistory::create(['product_id'=>$product->id,'price'=>$d['price'],'change_percent'=>$d['price_change'],'recorded_at'=>now()]);
+        $product->update($d); PriceHistory::create(['product_id'=>$product->id,'price'=>$d['price'],'change_percent'=>$d['price_change'],'recorded_at'=>now()]); $this->audit('تغییر قیمت','Product',$product->id,$d);
         return back()->with('success','قیمت جدید ثبت شد.');
     }
 
@@ -72,10 +74,10 @@ class AdminController extends Controller
     public function shippingRateUpdate(Request $r, ShippingRate $shippingRate){$d=$r->validate(['origin_city'=>'required|max:80','destination_city'=>'required|max:80','min_weight_kg'=>'required|integer|min:0','max_weight_kg'=>'nullable|integer|gte:min_weight_kg','base_price_toman'=>'required|integer|min:0','price_per_kg_toman'=>'required|integer|min:0']);$shippingRate->update($d);return back()->with('success','نرخ حمل ویرایش شد.');}
     public function shippingRateToggle(ShippingRate $shippingRate){$shippingRate->update(['is_active'=>!$shippingRate->is_active]);return back()->with('success','وضعیت نرخ حمل تغییر کرد.');}
     public function shippingRateDestroy(ShippingRate $shippingRate){$shippingRate->delete();return back()->with('success','نرخ حمل حذف شد.');}
-    public function orderUpdate(Request $r, PurchaseOrder $order){ $d=$r->validate(['status'=>'required|in:pending,payment_started,paid,processing,ready,shipped,delivered,cancelled,failed','admin_note'=>'nullable|string|max:1000']); $order->update($d); return back()->with('success','وضعیت سفارش به‌روزرسانی شد.'); }
+    public function orderUpdate(Request $r, PurchaseOrder $order){ $d=$r->validate(['status'=>'required|in:pending,payment_started,paid,processing,ready,shipped,delivered,cancelled,failed','admin_note'=>'nullable|string|max:1000']); $order->update($d); $this->audit('تغییر وضعیت سفارش','PurchaseOrder',$order->id,['status'=>$d['status']]); return back()->with('success','وضعیت سفارش به‌روزرسانی شد.'); }
 
     public function quotes(){ return view('admin.quotes',['quotes'=>QuoteRequest::latest()->get()]); }
-    public function quoteUpdate(Request $r, QuoteRequest $quote){ $d=$r->validate(['status'=>'required|in:new,contacted,quoted,won,lost','note'=>'nullable|string|max:1000']); $quote->update($d); return back()->with('success','وضعیت استعلام به‌روزرسانی شد.'); }
+    public function quoteUpdate(Request $r, QuoteRequest $quote){ $d=$r->validate(['status'=>'required|in:new,contacted,quoted,won,lost','note'=>'nullable|string|max:1000']); $quote->update($d); $this->audit('تغییر وضعیت استعلام','QuoteRequest',$quote->id,['status'=>$d['status']]); return back()->with('success','وضعیت استعلام به‌روزرسانی شد.'); }
 
     public function content(){ return view('admin.content',['articles'=>Article::orderByDesc('published_at')->get()]); }
     public function articleStore(Request $r){
@@ -94,7 +96,7 @@ class AdminController extends Controller
     }
     public function userStore(Request $r){
         $d=$r->validate(['name'=>'required|max:120','email'=>'required|email|unique:users,email','password'=>'required|min:8','role'=>'required|in:super_admin,admin,pricing,content']);
-        User::create(['name'=>$d['name'],'email'=>$d['email'],'password'=>Hash::make($d['password']),'role'=>$d['role'],'is_active'=>true]); return back()->with('success','کاربر سازمانی ایجاد شد.');
+        $user=User::create(['name'=>$d['name'],'email'=>$d['email'],'password'=>Hash::make($d['password']),'role'=>$d['role'],'is_active'=>true]); $this->audit('ایجاد کاربر','User',$user->id,['role'=>$user->role]); return back()->with('success','کاربر سازمانی ایجاد شد.');
     }
-    public function userToggle(User $user){ if($user->id===auth()->id()) return back()->with('error','نمی‌توانید حساب خودتان را غیرفعال کنید.'); $user->update(['is_active'=>!$user->is_active]); return back()->with('success','وضعیت کاربر تغییر کرد.'); }
+    public function userToggle(User $user){ if($user->id===auth()->id()) return back()->with('error','نمی‌توانید حساب خودتان را غیرفعال کنید.'); $user->update(['is_active'=>!$user->is_active]); $this->audit('تغییر وضعیت کاربر','User',$user->id,['is_active'=>$user->is_active]); return back()->with('success','وضعیت کاربر تغییر کرد.'); }
 }
