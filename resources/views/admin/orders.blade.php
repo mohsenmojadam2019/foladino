@@ -32,7 +32,7 @@
       <tbody>
       @forelse($orders as $o)
       <tr data-status="{{ $o->status }}">
-        <td><strong>#{{ fa_digits($o->id) }}</strong></td>
+        <td><a href="{{ route('admin.orders.show',$o) }}"><strong>#{{ fa_digits($o->id) }}</strong></a></td>
         <td><div class="admin-customer-cell"><span class="mini-avatar">{{ mb_substr($o->customer_name,0,1) }}</span><div><b>{{ $o->customer_name }}</b><small>{{ $o->mobile }}</small></div></div></td>
         <td><div class="table-product">@if($o->product)<img src="{{ $o->product->image }}" alt="">@endif<span><b>{{ $o->product?->name ?? '—' }}</b><small>{{ $o->product?->standard }}</small></span></div></td>
         <td>{{ fa_digits($o->quantity_tons) }} تن</td>

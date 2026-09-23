@@ -60,6 +60,7 @@ class AdminController extends Controller
     }
 
     public function orders(){ return view('admin.orders',['orders'=>Schema::hasTable('purchase_orders') ? PurchaseOrder::with(['product','items'])->latest()->get() : collect()]); }
+    public function orderShow(PurchaseOrder $order){ return view('admin.order-show',['order'=>$order->load(['product','items','transactions'])]); }
     public function transactions(){ return view('admin.transactions',['transactions'=>Schema::hasTable('payment_transactions') ? PaymentTransaction::with('order')->latest()->get() : collect()]); }
     public function customers(){ return view('admin.customers',['customers'=>User::where('role','customer')->latest()->get()]); }
     public function inventory(){ return view('admin.inventory',['products'=>Product::with(['factory','category'])->orderBy('name')->get()]); }
