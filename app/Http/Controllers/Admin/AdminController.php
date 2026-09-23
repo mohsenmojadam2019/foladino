@@ -2,7 +2,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\{Article,Category,Factory,PriceHistory,Product,PurchaseOrder,QuoteRequest,Setting,User,ShippingRate,PaymentTransaction,AdminAuditLog};
+use App\Models\{Article,Category,Factory,PriceHistory,Product,PurchaseOrder,QuoteRequest,Setting,User,ShippingRate,PaymentTransaction,AdminAuditLog,AdminNotification};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
@@ -65,6 +65,8 @@ class AdminController extends Controller
     public function suppliers(){ return view('admin.suppliers',['factories'=>Factory::withCount('products')->orderBy('name')->get()]); }
     public function procurement(){ return view('admin.procurement',['products'=>Product::with('factory')->where('stock_status','call')->orWhere('stock_kg','<',1000)->get(),'factories'=>Factory::withCount('products')->get()]); }
     public function auditLogs(){ return view('admin.audit-logs',['logs'=>AdminAuditLog::with('user')->latest()->take(300)->get()]); }
+    public function notifications(){ return view('admin.notifications',['notifications'=>AdminNotification::where(function($q){$q->whereNull('user_id')->orWhere('user_id',auth()->id());})->latest()->take(100)->get()]); }
+    public function notificationRead(AdminNotification $notification){ abort_unless(!$notification->user_id || $notification->user_id===auth()->id(),403); $notification->update(['read_at'=>now()]); return back(); }
     public function shippingRates(){ return view('admin.shipping-rates',['rates'=>ShippingRate::latest()->get()]); }
     public function shippingRateStore(Request $r){$d=$r->validate(['origin_city'=>'required|max:80','destination_city'=>'required|max:80','min_weight_kg'=>'required|integer|min:0','max_weight_kg'=>'nullable|integer|gte:min_weight_kg','base_price_toman'=>'required|integer|min:0','price_per_kg_toman'=>'required|integer|min:0']); ShippingRate::create($d+['is_active'=>true]); return back()->with('success','نرخ حمل ثبت شد.');}
     public function shippingRateUpdate(Request $r, ShippingRate $shippingRate){$d=$r->validate(['origin_city'=>'required|max:80','destination_city'=>'required|max:80','min_weight_kg'=>'required|integer|min:0','max_weight_kg'=>'nullable|integer|gte:min_weight_kg','base_price_toman'=>'required|integer|min:0','price_per_kg_toman'=>'required|integer|min:0']);$shippingRate->update($d);return back()->with('success','نرخ حمل ویرایش شد.');}

@@ -65,7 +65,7 @@
       <div class="admin-search"><span>⌕</span><input placeholder="جستجو در محصولات، سفارش‌ها، مشتریان..."><kbd>Ctrl + K</kbd></div>
       <div class="admin-top-spacer"></div>
       <div class="admin-date"><span>▣</span><div><small>امروز</small><b>{{ jdate_fa(now(),'l j F Y') }}</b></div></div>
-      <button class="admin-icon-btn">♧</button>
+      <a class="admin-icon-btn" href="{{ route('admin.notifications') }}">♧</a>
       <button class="admin-icon-btn">◫</button>
     </header>
 
