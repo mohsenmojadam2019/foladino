@@ -55,7 +55,7 @@ class AdminController extends Controller
     public function pricing(){ return view('admin.pricing',['products'=>Product::with(['factory','category'])->orderBy('name')->get()]); }
     public function priceUpdate(Request $r, Product $product){
         $d=$r->validate(['price'=>'required|integer|min:0','price_change'=>'required|numeric']);
-        $product->update($d); PriceHistory::create(['product_id'=>$product->id,'price'=>$d['price'],'change_percent'=>$d['price_change'],'recorded_at'=>now()]); $this->audit('تغییر قیمت','Product',$product->id,$d);
+        $product->update($d); PriceHistory::create(['product_id'=>$product->id,'price'=>$d['price'],'change_percent'=>$d['price_change'],'recorded_at'=>now()]); $this->audit('تغییر قیمت','Product',$product->id,$d); AdminNotification::create(['title'=>'قیمت محصول تغییر کرد','body'=>$product->name.' با قیمت جدید ثبت شد.','type'=>'info','link'=>route('admin.pricing')]);
         return back()->with('success','قیمت جدید ثبت شد.');
     }
 
@@ -82,7 +82,7 @@ class AdminController extends Controller
     public function shippingRateUpdate(Request $r, ShippingRate $shippingRate){$d=$r->validate(['origin_city'=>'required|max:80','destination_city'=>'required|max:80','min_weight_kg'=>'required|integer|min:0','max_weight_kg'=>'nullable|integer|gte:min_weight_kg','base_price_toman'=>'required|integer|min:0','price_per_kg_toman'=>'required|integer|min:0']);$shippingRate->update($d);return back()->with('success','نرخ حمل ویرایش شد.');}
     public function shippingRateToggle(ShippingRate $shippingRate){$shippingRate->update(['is_active'=>!$shippingRate->is_active]);return back()->with('success','وضعیت نرخ حمل تغییر کرد.');}
     public function shippingRateDestroy(ShippingRate $shippingRate){$shippingRate->delete();return back()->with('success','نرخ حمل حذف شد.');}
-    public function orderUpdate(Request $r, PurchaseOrder $order){ $d=$r->validate(['status'=>'required|in:pending,payment_started,paid,processing,ready,shipped,delivered,cancelled,failed','admin_note'=>'nullable|string|max:1000']); $order->update($d); $this->audit('تغییر وضعیت سفارش','PurchaseOrder',$order->id,['status'=>$d['status']]); return back()->with('success','وضعیت سفارش به‌روزرسانی شد.'); }
+    public function orderUpdate(Request $r, PurchaseOrder $order){ $d=$r->validate(['status'=>'required|in:pending,payment_started,paid,processing,ready,shipped,delivered,cancelled,failed','admin_note'=>'nullable|string|max:1000']); $order->update($d); $this->audit('تغییر وضعیت سفارش','PurchaseOrder',$order->id,['status'=>$d['status']]); AdminNotification::create(['title'=>'تغییر وضعیت سفارش #'.$order->id,'body'=>'وضعیت سفارش به '.$d['status'].' تغییر کرد.','type'=>$d['status']==='failed'?'warning':'info','link'=>route('admin.orders.show',$order)]); return back()->with('success','وضعیت سفارش به‌روزرسانی شد.'); }
 
     public function quotes(){ return view('admin.quotes',['quotes'=>QuoteRequest::latest()->get()]); }
     public function quoteUpdate(Request $r, QuoteRequest $quote){ $d=$r->validate(['status'=>'required|in:new,contacted,quoted,won,lost','note'=>'nullable|string|max:1000']); $quote->update($d); $this->audit('تغییر وضعیت استعلام','QuoteRequest',$quote->id,['status'=>$d['status']]); return back()->with('success','وضعیت استعلام به‌روزرسانی شد.'); }
