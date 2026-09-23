@@ -33,6 +33,8 @@
       @endif
       @if(in_array($role,['super_admin','admin']))
       <a class="{{ request()->routeIs('admin.orders*')?'active':'' }}" href="{{ route('admin.orders') }}"><i>🛒</i><span>سفارش‌ها</span></a>
+      <a class="{{ request()->routeIs('admin.transactions*')?'active':'' }}" href="{{ route('admin.transactions') }}"><i>◉</i><span>تراکنش‌ها</span></a>
+      <a class="{{ request()->routeIs('admin.customers*')?'active':'' }}" href="{{ route('admin.customers') }}"><i>♙</i><span>مشتریان</span></a>
       <a class="{{ request()->routeIs('admin.quotes*')?'active':'' }}" href="{{ route('admin.quotes') }}"><i>☏</i><span>استعلام‌ها و CRM</span></a>
       @endif
       @if(in_array($role,['super_admin','admin','content']))

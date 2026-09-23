@@ -1,0 +1,8 @@
+@extends('admin.layout')
+@section('title','مشتریان')
+@section('heading','مدیریت مشتریان')
+@section('subheading','حساب‌های مشتریان، وضعیت فعال‌سازی و سابقه تعامل')
+@section('content')
+<div class="admin-page-kpis"><article><span>♙</span><div><small>کل مشتریان</small><b>{{ fa_digits($customers->count()) }}</b></div></article><article><span>✓</span><div><small>فعال</small><b>{{ fa_digits($customers->where('is_active',true)->count()) }}</b></div></article><article><span>+</span><div><small>این ماه</small><b>{{ fa_digits($customers->where('created_at','>=',now()->startOfMonth())->count()) }}</b></div></article><article><span>◎</span><div><small>تأییدنشده</small><b>{{ fa_digits($customers->where('is_active',false)->count()) }}</b></div></article></div>
+<section class="admin-card"><div class="admin-card-head"><div><h3>فهرست مشتریان</h3><p>اطلاعات حساب و وضعیت دسترسی مشتریان</p></div><div class="admin-table-search"><span>⌕</span><input placeholder="جستجوی نام، ایمیل یا موبایل..."></div></div><div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>مشتری</th><th>ایمیل</th><th>نقش</th><th>وضعیت</th><th>عضویت</th></tr></thead><tbody>@forelse($customers as $customer)<tr><td><div class="admin-customer-cell"><span class="mini-avatar">{{ mb_substr($customer->name,0,1) }}</span><div><b>{{ $customer->name }}</b><small>{{ $customer->mobile ?: 'بدون موبایل' }}</small></div></div></td><td>{{ $customer->email }}</td><td>مشتری</td><td><span class="status-badge {{ $customer->is_active?'won':'lost' }}">{{ $customer->is_active?'فعال':'غیرفعال' }}</span></td><td>{{ jdate_fa($customer->created_at,'Y/m/d') }}</td></tr>@empty<tr><td colspan="5" class="admin-empty">هنوز مشتری‌ای ثبت نشده است.</td></tr>@endforelse</tbody></table></div></section>
+@endsection
