@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class AdminController extends Controller
 {
@@ -64,6 +65,8 @@ class AdminController extends Controller
     public function inventory(){ return view('admin.inventory',['products'=>Product::with(['factory','category'])->orderBy('name')->get()]); }
     public function permissions(){ return view('admin.permissions',['users'=>User::whereIn('role',['super_admin','admin','pricing','content'])->orderBy('name')->get()]); }
     public function reports(){ return view('admin.reports',['orders'=>PurchaseOrder::latest()->get(),'products'=>Product::with('factory')->get(),'quotes'=>QuoteRequest::latest()->get()]); }
+    public function exportReport(string $type): StreamedResponse
+    { abort_unless(in_array($type,['orders','transactions','products'],true),404); $rows=$type==='orders'?PurchaseOrder::latest()->get():($type==='transactions'?PaymentTransaction::latest()->get():Product::latest()->get()); return response()->streamDownload(function() use($rows){$out=fopen('php://output','w');fputcsv($out,['id','name_or_status','amount_or_price','created_at']);foreach($rows as $row){fputcsv($out,[$row->id,$row->status??$row->name??'', $row->total_toman??$row->amount_toman??$row->price??'', optional($row->created_at)->toDateTimeString()]);}fclose($out);},"fooladino-{$type}-".now()->format('Ymd-His').'.csv'); }
     public function suppliers(){ return view('admin.suppliers',['factories'=>Factory::withCount('products')->orderBy('name')->get()]); }
     public function procurement(){ return view('admin.procurement',['products'=>Product::with('factory')->where('stock_status','call')->orWhere('stock_kg','<',1000)->get(),'factories'=>Factory::withCount('products')->get()]); }
     public function auditLogs(){ return view('admin.audit-logs',['logs'=>AdminAuditLog::with('user')->latest()->take(300)->get()]); }
