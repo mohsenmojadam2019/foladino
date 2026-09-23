@@ -59,16 +59,18 @@ class AdminController extends Controller
         return back()->with('success','قیمت جدید ثبت شد.');
     }
 
-    public function orders(){ return view('admin.orders',['orders'=>Schema::hasTable('purchase_orders') ? PurchaseOrder::with(['product','items'])->latest()->get() : collect()]); }
+    public function orders(){ return view('admin.orders',['orders'=>Schema::hasTable('purchase_orders') ? PurchaseOrder::with(['product','items'])->latest()->paginate(25) : collect()]); }
     public function orderShow(PurchaseOrder $order){ return view('admin.order-show',['order'=>$order->load(['product','items','transactions'])]); }
     public function companies(){ return view('admin.companies',['companies'=>Company::withCount('projects')->latest()->get()]); }
+    public function companyStore(Request $r){$d=$r->validate(['name'=>'required|max:180','national_id'=>'nullable|max:20','economic_code'=>'nullable|max:30','phone'=>'nullable|max:30','credit_limit'=>'nullable|numeric|min:0']);Company::create($d+['is_active'=>true]);return back()->with('success','شرکت ثبت شد.');}
+    public function companyUpdate(Request $r, Company $company){$d=$r->validate(['name'=>'required|max:180','national_id'=>'nullable|max:20','economic_code'=>'nullable|max:30','phone'=>'nullable|max:30','credit_limit'=>'nullable|numeric|min:0']);$company->update($d);return back()->with('success','شرکت ویرایش شد.');}
     public function refunds(){ return view('admin.refunds',['refunds'=>Refund::with('order')->latest()->get()]); }
     public function logistics(){ return view('admin.logistics',['shipments'=>Shipment::with(['order','vehicle'])->latest()->get(),'vehicles'=>Vehicle::latest()->get()]); }
     public function vehicleStore(Request $r){$d=$r->validate(['plate'=>'required|max:30|unique:vehicles,plate','driver_name'=>'required|max:120','driver_mobile'=>'nullable|max:30','capacity_kg'=>'required|integer|min:0']);Vehicle::create($d+['is_active'=>true]);return back()->with('success','خودرو ثبت شد.');}
     public function vehicleToggle(Vehicle $vehicle){$vehicle->update(['is_active'=>!$vehicle->is_active]);return back()->with('success','وضعیت خودرو تغییر کرد.');}
     public function refundUpdate(Request $r, Refund $refund){$d=$r->validate(['status'=>'required|in:requested,approved,processed,rejected']);$refund->update($d+($d['status']==='processed'?['processed_by'=>auth()->id(),'processed_at'=>now()]:[]));$this->audit('تغییر وضعیت استرداد','Refund',$refund->id,$d);return back()->with('success','وضعیت استرداد به‌روزرسانی شد.');}
-    public function transactions(){ return view('admin.transactions',['transactions'=>Schema::hasTable('payment_transactions') ? PaymentTransaction::with('order')->latest()->get() : collect()]); }
-    public function customers(){ return view('admin.customers',['customers'=>User::where('role','customer')->latest()->get()]); }
+    public function transactions(){ return view('admin.transactions',['transactions'=>Schema::hasTable('payment_transactions') ? PaymentTransaction::with('order')->latest()->paginate(25) : collect()]); }
+    public function customers(){ $q=User::where('role','customer'); if(request('q'))$q->where(fn($x)=>$x->where('name','like','%'.request('q').'%')->orWhere('email','like','%'.request('q').'%')->orWhere('mobile','like','%'.request('q').'%')); return view('admin.customers',['customers'=>$q->latest()->paginate(25)->withQueryString()]); }
     public function inventory(){ return view('admin.inventory',['products'=>Product::with(['factory','category'])->orderBy('name')->get()]); }
     public function permissions(){ return view('admin.permissions',['users'=>User::whereIn('role',['super_admin','admin','pricing','content'])->orderBy('name')->get()]); }
     public function reports(){ return view('admin.reports',['orders'=>PurchaseOrder::latest()->get(),'products'=>Product::with('factory')->get(),'quotes'=>QuoteRequest::latest()->get()]); }

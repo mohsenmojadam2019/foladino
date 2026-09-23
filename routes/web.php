@@ -67,6 +67,8 @@ Route::prefix('admin')->name('admin.')->group(function(){
             Route::get('/transactions',[AdminController::class,'transactions'])->name('transactions');
             Route::get('/customers',[AdminController::class,'customers'])->name('customers');
             Route::get('/companies',[AdminController::class,'companies'])->name('companies');
+            Route::post('/companies',[AdminController::class,'companyStore'])->name('companies.store');
+            Route::put('/companies/{company}',[AdminController::class,'companyUpdate'])->name('companies.update');
             Route::get('/refunds',[AdminController::class,'refunds'])->name('refunds');
             Route::get('/logistics',[AdminController::class,'logistics'])->name('logistics');
             Route::post('/vehicles',[AdminController::class,'vehicleStore'])->name('vehicles.store');

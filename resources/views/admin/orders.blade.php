@@ -47,6 +47,7 @@
       </tbody>
     </table>
   </div>
+  @if(method_exists($orders,'links'))<div class="admin-pagination">{{ $orders->withQueryString()->links() }}</div>@endif
 </section>
 
 <div class="admin-order-summary">
