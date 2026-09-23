@@ -68,6 +68,7 @@ Route::prefix('admin')->name('admin.')->group(function(){
             Route::get('/inventory',[AdminController::class,'inventory'])->name('inventory');
             Route::get('/suppliers',[AdminController::class,'suppliers'])->name('suppliers');
             Route::get('/reports',[AdminController::class,'reports'])->name('reports');
+            Route::get('/procurement',[AdminController::class,'procurement'])->name('procurement');
             Route::get('/shipping-rates',[AdminController::class,'shippingRates'])->name('shipping-rates');
             Route::put('/orders/{order}',[AdminController::class,'orderUpdate'])->name('orders.update');
             Route::post('/shipping-rates',[AdminController::class,'shippingRateStore'])->name('shipping-rates.store');

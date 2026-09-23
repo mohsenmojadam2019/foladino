@@ -37,6 +37,7 @@
       <a class="{{ request()->routeIs('admin.customers*')?'active':'' }}" href="{{ route('admin.customers') }}"><i>♙</i><span>مشتریان</span></a>
       <a class="{{ request()->routeIs('admin.inventory*')?'active':'' }}" href="{{ route('admin.inventory') }}"><i>▤</i><span>انبار و موجودی</span></a>
       <a class="{{ request()->routeIs('admin.suppliers*')?'active':'' }}" href="{{ route('admin.suppliers') }}"><i>⌂</i><span>تأمین‌کنندگان</span></a>
+      <a class="{{ request()->routeIs('admin.procurement*')?'active':'' }}" href="{{ route('admin.procurement') }}"><i>⇄</i><span>خرید و تأمین</span></a>
       <a class="{{ request()->routeIs('admin.reports*')?'active':'' }}" href="{{ route('admin.reports') }}"><i>▥</i><span>گزارش‌ها</span></a>
       <a class="{{ request()->routeIs('admin.quotes*')?'active':'' }}" href="{{ route('admin.quotes') }}"><i>☏</i><span>استعلام‌ها و CRM</span></a>
       @endif
