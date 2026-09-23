@@ -34,6 +34,7 @@
       @if(in_array($role,['super_admin','admin']))
       <a class="{{ request()->routeIs('admin.orders*')?'active':'' }}" href="{{ route('admin.orders') }}"><i>🛒</i><span>سفارش‌ها</span></a>
       <a class="{{ request()->routeIs('admin.transactions*')?'active':'' }}" href="{{ route('admin.transactions') }}"><i>◉</i><span>تراکنش‌ها</span></a>
+      <a class="{{ request()->routeIs('admin.refunds*')?'active':'' }}" href="{{ route('admin.refunds') }}"><i>↶</i><span>استرداد وجه</span></a>
       <a class="{{ request()->routeIs('admin.customers*')?'active':'' }}" href="{{ route('admin.customers') }}"><i>♙</i><span>مشتریان</span></a>
       <a class="{{ request()->routeIs('admin.companies*')?'active':'' }}" href="{{ route('admin.companies') }}"><i>▣</i><span>شرکت‌ها و پروژه‌ها</span></a>
       <a class="{{ request()->routeIs('admin.inventory*')?'active':'' }}" href="{{ route('admin.inventory') }}"><i>▤</i><span>انبار و موجودی</span></a>
